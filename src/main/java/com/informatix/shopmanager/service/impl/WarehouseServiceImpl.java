@@ -3,7 +3,6 @@ package com.informatix.shopmanager.service.impl;
 import com.informatix.shopmanager.service.WarehouseService;
 import com.informatix.shopmanager.domain.Warehouse;
 import com.informatix.shopmanager.repository.WarehouseRepository;
-import com.informatix.shopmanager.repository.search.WarehouseSearchRepository;
 import com.informatix.shopmanager.service.dto.WarehouseDTO;
 import com.informatix.shopmanager.service.mapper.WarehouseMapper;
 import org.slf4j.Logger;
@@ -13,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Warehouse.
@@ -29,12 +26,9 @@ public class WarehouseServiceImpl implements WarehouseService{
 
     private final WarehouseMapper warehouseMapper;
 
-    private final WarehouseSearchRepository warehouseSearchRepository;
-
-    public WarehouseServiceImpl(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper, WarehouseSearchRepository warehouseSearchRepository) {
+    public WarehouseServiceImpl(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper) {
         this.warehouseRepository = warehouseRepository;
         this.warehouseMapper = warehouseMapper;
-        this.warehouseSearchRepository = warehouseSearchRepository;
     }
 
     /**
@@ -48,9 +42,7 @@ public class WarehouseServiceImpl implements WarehouseService{
         log.debug("Request to save Warehouse : {}", warehouseDTO);
         Warehouse warehouse = warehouseMapper.toEntity(warehouseDTO);
         warehouse = warehouseRepository.save(warehouse);
-        WarehouseDTO result = warehouseMapper.toDto(warehouse);
-        warehouseSearchRepository.save(warehouse);
-        return result;
+        return warehouseMapper.toDto(warehouse);
     }
 
     /**
@@ -90,21 +82,5 @@ public class WarehouseServiceImpl implements WarehouseService{
     public void delete(Long id) {
         log.debug("Request to delete Warehouse : {}", id);
         warehouseRepository.delete(id);
-        warehouseSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the warehouse corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Page<WarehouseDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Warehouses for query {}", query);
-        Page<Warehouse> result = warehouseSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(warehouseMapper::toDto);
     }
 }

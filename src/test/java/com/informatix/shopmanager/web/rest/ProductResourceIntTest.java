@@ -5,7 +5,6 @@ import com.informatix.shopmanager.ShopManagerApp;
 import com.informatix.shopmanager.domain.Product;
 import com.informatix.shopmanager.repository.ProductRepository;
 import com.informatix.shopmanager.service.ProductService;
-import com.informatix.shopmanager.repository.search.ProductSearchRepository;
 import com.informatix.shopmanager.service.dto.ProductDTO;
 import com.informatix.shopmanager.service.mapper.ProductMapper;
 import com.informatix.shopmanager.web.rest.errors.ExceptionTranslator;
@@ -25,8 +24,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static com.informatix.shopmanager.web.rest.TestUtil.createFormattingConversionService;
@@ -50,8 +49,8 @@ public class ProductResourceIntTest {
     private static final Float DEFAULT_BUYING_PRICE = 1F;
     private static final Float UPDATED_BUYING_PRICE = 2F;
 
-    private static final Instant DEFAULT_MODIFIED = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_MODIFIED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_MODIFIED = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_MODIFIED = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private ProductRepository productRepository;
@@ -61,9 +60,6 @@ public class ProductResourceIntTest {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private ProductSearchRepository productSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -108,7 +104,6 @@ public class ProductResourceIntTest {
 
     @Before
     public void initTest() {
-        productSearchRepository.deleteAll();
         product = createEntity(em);
     }
 
@@ -131,10 +126,6 @@ public class ProductResourceIntTest {
         assertThat(testProduct.getLabel()).isEqualTo(DEFAULT_LABEL);
         assertThat(testProduct.getBuyingPrice()).isEqualTo(DEFAULT_BUYING_PRICE);
         assertThat(testProduct.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the Product in Elasticsearch
-        Product productEs = productSearchRepository.findOne(testProduct.getId());
-        assertThat(productEs).isEqualToIgnoringGivenFields(testProduct);
     }
 
     @Test
@@ -240,7 +231,6 @@ public class ProductResourceIntTest {
     public void updateProduct() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
-        productSearchRepository.save(product);
         int databaseSizeBeforeUpdate = productRepository.findAll().size();
 
         // Update the product
@@ -265,10 +255,6 @@ public class ProductResourceIntTest {
         assertThat(testProduct.getLabel()).isEqualTo(UPDATED_LABEL);
         assertThat(testProduct.getBuyingPrice()).isEqualTo(UPDATED_BUYING_PRICE);
         assertThat(testProduct.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the Product in Elasticsearch
-        Product productEs = productSearchRepository.findOne(testProduct.getId());
-        assertThat(productEs).isEqualToIgnoringGivenFields(testProduct);
     }
 
     @Test
@@ -295,7 +281,6 @@ public class ProductResourceIntTest {
     public void deleteProduct() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
-        productSearchRepository.save(product);
         int databaseSizeBeforeDelete = productRepository.findAll().size();
 
         // Get the product
@@ -303,30 +288,9 @@ public class ProductResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean productExistsInEs = productSearchRepository.exists(product.getId());
-        assertThat(productExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchProduct() throws Exception {
-        // Initialize the database
-        productRepository.saveAndFlush(product);
-        productSearchRepository.save(product);
-
-        // Search the product
-        restProductMockMvc.perform(get("/api/_search/products?query=id:" + product.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
-            .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL.toString())))
-            .andExpect(jsonPath("$.[*].buyingPrice").value(hasItem(DEFAULT_BUYING_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
     @Test

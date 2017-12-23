@@ -4,8 +4,7 @@
             "home": {
                 "title": "TransactionTags",
                 "createLabel": "Créer un nouveau Transaction Tag",
-                "createOrEditLabel": "Créer ou éditer un Transaction Tag",
-                "search": "Recherche pour Transaction Tag"
+                "createOrEditLabel": "Créer ou éditer un Transaction Tag"
             },
             "created": "Un nouveau Transaction Tag a été créé avec l'identifiant {{ param }}",
             "updated": "Le Transaction Tag avec l'identifiant {{ param }} a été mis à jour",

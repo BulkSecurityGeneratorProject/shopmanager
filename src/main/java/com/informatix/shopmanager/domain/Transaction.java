@@ -1,17 +1,13 @@
 package com.informatix.shopmanager.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import com.informatix.shopmanager.domain.enumeration.TransactionType;
@@ -22,7 +18,6 @@ import com.informatix.shopmanager.domain.enumeration.TransactionType;
 @Entity
 @Table(name = "transaction")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "transaction")
 public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,16 +32,15 @@ public class Transaction implements Serializable {
     private TransactionType type;
 
     @NotNull
+    @Min(value = 1)
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
-    @Column(name = "modified")
-    private Instant modified;
+    @Column(name = "keywords")
+    private String keywords;
 
-    @OneToMany(mappedBy = "transaction")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<TransactionTag> tags = new HashSet<>();
+    @Column(name = "modified")
+    private LocalDate modified;
 
     @ManyToOne
     private Product product;
@@ -86,42 +80,30 @@ public class Transaction implements Serializable {
         this.amount = amount;
     }
 
-    public Instant getModified() {
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public Transaction keywords(String keywords) {
+        this.keywords = keywords;
+        return this;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public LocalDate getModified() {
         return modified;
     }
 
-    public Transaction modified(Instant modified) {
+    public Transaction modified(LocalDate modified) {
         this.modified = modified;
         return this;
     }
 
-    public void setModified(Instant modified) {
+    public void setModified(LocalDate modified) {
         this.modified = modified;
-    }
-
-    public Set<TransactionTag> getTags() {
-        return tags;
-    }
-
-    public Transaction tags(Set<TransactionTag> transactionTags) {
-        this.tags = transactionTags;
-        return this;
-    }
-
-    public Transaction addTag(TransactionTag transactionTag) {
-        this.tags.add(transactionTag);
-        transactionTag.setTransaction(this);
-        return this;
-    }
-
-    public Transaction removeTag(TransactionTag transactionTag) {
-        this.tags.remove(transactionTag);
-        transactionTag.setTransaction(null);
-        return this;
-    }
-
-    public void setTags(Set<TransactionTag> transactionTags) {
-        this.tags = transactionTags;
     }
 
     public Product getProduct() {
@@ -164,6 +146,7 @@ public class Transaction implements Serializable {
             "id=" + getId() +
             ", type='" + getType() + "'" +
             ", amount=" + getAmount() +
+            ", keywords='" + getKeywords() + "'" +
             ", modified='" + getModified() + "'" +
             "}";
     }

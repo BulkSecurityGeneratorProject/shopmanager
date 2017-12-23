@@ -15,18 +15,14 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Warehouse.
+        Added the entity TransactionTag.
     -->
-    <changeSet id="20171223090931-1" author="jhipster">
-        <createTable tableName="warehouse">
+    <changeSet id="20171223162659-1" author="jhipster">
+        <createTable tableName="transaction_tag">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="amount" type="integer">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="stays" type="integer">
+            <column name="jhi_value" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
@@ -34,13 +30,13 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="product_id" type="bigint">
+            <column name="transaction_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="warehouse" columnName="modified" columnDataType="datetime"/>
+        <dropDefaultValue tableName="transaction_tag" columnName="modified" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

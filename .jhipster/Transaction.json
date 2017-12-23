@@ -2,12 +2,6 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "tag",
-            "otherEntityName": "transactionTag",
-            "otherEntityRelationshipName": "transaction"
-        },
-        {
             "relationshipType": "many-to-one",
             "relationshipName": "product",
             "otherEntityName": "product",
@@ -27,15 +21,21 @@
             "fieldName": "amount",
             "fieldType": "Integer",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 1
+        },
+        {
+            "fieldName": "keywords",
+            "fieldType": "String"
         },
         {
             "fieldName": "modified",
-            "fieldType": "Instant"
+            "fieldType": "LocalDate"
         }
     ],
-    "changelogDate": "20171223090928",
+    "changelogDate": "20171223162658",
     "entityTableName": "transaction",
     "dto": "mapstruct",
     "pagination": "infinite-scroll",

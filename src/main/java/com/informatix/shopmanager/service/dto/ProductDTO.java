@@ -1,7 +1,7 @@
 package com.informatix.shopmanager.service.dto;
 
 
-import java.time.Instant;
+import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -17,9 +17,10 @@ public class ProductDTO implements Serializable {
     private String label;
 
     @NotNull
+    @DecimalMin(value = "1")
     private Float buyingPrice;
 
-    private Instant modified;
+    private LocalDate modified;
 
     public Long getId() {
         return id;
@@ -45,11 +46,11 @@ public class ProductDTO implements Serializable {
         this.buyingPrice = buyingPrice;
     }
 
-    public Instant getModified() {
+    public LocalDate getModified() {
         return modified;
     }
 
-    public void setModified(Instant modified) {
+    public void setModified(LocalDate modified) {
         this.modified = modified;
     }
 

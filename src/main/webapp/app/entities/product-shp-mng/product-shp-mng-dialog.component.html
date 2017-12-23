@@ -26,11 +26,15 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.product.buyingPrice" for="field_buyingPrice">Buying Price</label>
             <input type="number" class="form-control" name="buyingPrice" id="field_buyingPrice"
-                [(ngModel)]="product.buyingPrice" required/>
+                [(ngModel)]="product.buyingPrice" required min="1"/>
             <div [hidden]="!(editForm.controls.buyingPrice?.dirty && editForm.controls.buyingPrice?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.buyingPrice?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.buyingPrice?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1 }">
+                    This field should be at least 1.
                 </small>
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.buyingPrice?.errors?.number" jhiTranslate="entity.validation.number">
@@ -40,9 +44,12 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.product.modified" for="field_modified">Modified</label>
-            <div class="d-flex">
-                <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="product.modified"
+            <div class="input-group">
+                <input id="field_modified" type="text" class="form-control" name="modified" ngbDatepicker  #modifiedDp="ngbDatepicker" [(ngModel)]="product.modified"
                 />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="modifiedDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
             </div>
         </div>
 

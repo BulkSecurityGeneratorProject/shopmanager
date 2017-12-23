@@ -5,7 +5,6 @@ import com.informatix.shopmanager.ShopManagerApp;
 import com.informatix.shopmanager.domain.Transaction;
 import com.informatix.shopmanager.repository.TransactionRepository;
 import com.informatix.shopmanager.service.TransactionService;
-import com.informatix.shopmanager.repository.search.TransactionSearchRepository;
 import com.informatix.shopmanager.service.dto.TransactionDTO;
 import com.informatix.shopmanager.service.mapper.TransactionMapper;
 import com.informatix.shopmanager.web.rest.errors.ExceptionTranslator;
@@ -25,8 +24,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static com.informatix.shopmanager.web.rest.TestUtil.createFormattingConversionService;
@@ -51,8 +50,11 @@ public class TransactionResourceIntTest {
     private static final Integer DEFAULT_AMOUNT = 1;
     private static final Integer UPDATED_AMOUNT = 2;
 
-    private static final Instant DEFAULT_MODIFIED = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_MODIFIED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final String DEFAULT_KEYWORDS = "AAAAAAAAAA";
+    private static final String UPDATED_KEYWORDS = "BBBBBBBBBB";
+
+    private static final LocalDate DEFAULT_MODIFIED = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_MODIFIED = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -62,9 +64,6 @@ public class TransactionResourceIntTest {
 
     @Autowired
     private TransactionService transactionService;
-
-    @Autowired
-    private TransactionSearchRepository transactionSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -103,13 +102,13 @@ public class TransactionResourceIntTest {
         Transaction transaction = new Transaction()
             .type(DEFAULT_TYPE)
             .amount(DEFAULT_AMOUNT)
+            .keywords(DEFAULT_KEYWORDS)
             .modified(DEFAULT_MODIFIED);
         return transaction;
     }
 
     @Before
     public void initTest() {
-        transactionSearchRepository.deleteAll();
         transaction = createEntity(em);
     }
 
@@ -131,11 +130,8 @@ public class TransactionResourceIntTest {
         Transaction testTransaction = transactionList.get(transactionList.size() - 1);
         assertThat(testTransaction.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testTransaction.getAmount()).isEqualTo(DEFAULT_AMOUNT);
+        assertThat(testTransaction.getKeywords()).isEqualTo(DEFAULT_KEYWORDS);
         assertThat(testTransaction.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the Transaction in Elasticsearch
-        Transaction transactionEs = transactionSearchRepository.findOne(testTransaction.getId());
-        assertThat(transactionEs).isEqualToIgnoringGivenFields(testTransaction);
     }
 
     @Test
@@ -209,6 +205,7 @@ public class TransactionResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
+            .andExpect(jsonPath("$.[*].keywords").value(hasItem(DEFAULT_KEYWORDS.toString())))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
@@ -225,6 +222,7 @@ public class TransactionResourceIntTest {
             .andExpect(jsonPath("$.id").value(transaction.getId().intValue()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
+            .andExpect(jsonPath("$.keywords").value(DEFAULT_KEYWORDS.toString()))
             .andExpect(jsonPath("$.modified").value(DEFAULT_MODIFIED.toString()));
     }
 
@@ -241,7 +239,6 @@ public class TransactionResourceIntTest {
     public void updateTransaction() throws Exception {
         // Initialize the database
         transactionRepository.saveAndFlush(transaction);
-        transactionSearchRepository.save(transaction);
         int databaseSizeBeforeUpdate = transactionRepository.findAll().size();
 
         // Update the transaction
@@ -251,6 +248,7 @@ public class TransactionResourceIntTest {
         updatedTransaction
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
+            .keywords(UPDATED_KEYWORDS)
             .modified(UPDATED_MODIFIED);
         TransactionDTO transactionDTO = transactionMapper.toDto(updatedTransaction);
 
@@ -265,11 +263,8 @@ public class TransactionResourceIntTest {
         Transaction testTransaction = transactionList.get(transactionList.size() - 1);
         assertThat(testTransaction.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testTransaction.getAmount()).isEqualTo(UPDATED_AMOUNT);
+        assertThat(testTransaction.getKeywords()).isEqualTo(UPDATED_KEYWORDS);
         assertThat(testTransaction.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the Transaction in Elasticsearch
-        Transaction transactionEs = transactionSearchRepository.findOne(testTransaction.getId());
-        assertThat(transactionEs).isEqualToIgnoringGivenFields(testTransaction);
     }
 
     @Test
@@ -296,7 +291,6 @@ public class TransactionResourceIntTest {
     public void deleteTransaction() throws Exception {
         // Initialize the database
         transactionRepository.saveAndFlush(transaction);
-        transactionSearchRepository.save(transaction);
         int databaseSizeBeforeDelete = transactionRepository.findAll().size();
 
         // Get the transaction
@@ -304,30 +298,9 @@ public class TransactionResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean transactionExistsInEs = transactionSearchRepository.exists(transaction.getId());
-        assertThat(transactionExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Transaction> transactionList = transactionRepository.findAll();
         assertThat(transactionList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchTransaction() throws Exception {
-        // Initialize the database
-        transactionRepository.saveAndFlush(transaction);
-        transactionSearchRepository.save(transaction);
-
-        // Search the transaction
-        restTransactionMockMvc.perform(get("/api/_search/transactions?query=id:" + transaction.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(transaction.getId().intValue())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
     @Test

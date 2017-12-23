@@ -10,8 +10,8 @@ export class TransactionShpMng implements BaseEntity {
         public id?: number,
         public type?: TransactionType,
         public amount?: number,
+        public keywords?: string,
         public modified?: any,
-        public tags?: BaseEntity[],
         public productId?: number,
     ) {
     }

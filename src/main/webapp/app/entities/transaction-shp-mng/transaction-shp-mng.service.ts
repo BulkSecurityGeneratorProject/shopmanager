@@ -12,7 +12,6 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class TransactionShpMngService {
 
     private resourceUrl = SERVER_API_URL + 'api/transactions';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/transactions';
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
@@ -49,12 +48,6 @@ export class TransactionShpMngService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
-    search(req?: any): Observable<ResponseWrapper> {
-        const options = createRequestOption(req);
-        return this.http.get(this.resourceSearchUrl, options)
-            .map((res: any) => this.convertResponse(res));
-    }
-
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         const result = [];
@@ -70,7 +63,7 @@ export class TransactionShpMngService {
     private convertItemFromServer(json: any): TransactionShpMng {
         const entity: TransactionShpMng = Object.assign(new TransactionShpMng(), json);
         entity.modified = this.dateUtils
-            .convertDateTimeFromServer(json.modified);
+            .convertLocalDateFromServer(json.modified);
         return entity;
     }
 
@@ -79,8 +72,8 @@ export class TransactionShpMngService {
      */
     private convert(transaction: TransactionShpMng): TransactionShpMng {
         const copy: TransactionShpMng = Object.assign({}, transaction);
-
-        copy.modified = this.dateUtils.toDate(transaction.modified);
+        copy.modified = this.dateUtils
+            .convertLocalDateToServer(transaction.modified);
         return copy;
     }
 }

@@ -4,8 +4,7 @@
             "home": {
                 "title": "Warehouses",
                 "createLabel": "Créer un nouveau Warehouse",
-                "createOrEditLabel": "Créer ou éditer un Warehouse",
-                "search": "Recherche pour Warehouse"
+                "createOrEditLabel": "Créer ou éditer un Warehouse"
             },
             "created": "Un nouveau Warehouse a été créé avec l'identifiant {{ param }}",
             "updated": "Le Warehouse avec l'identifiant {{ param }} a été mis à jour",

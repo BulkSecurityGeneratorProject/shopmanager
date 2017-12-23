@@ -37,7 +37,7 @@ public class ShopManagerApp {
     }
 
     /**
-     * Initializes ShopManager.
+     * Initializes shopManager.
      * <p>
      * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
      * <p>

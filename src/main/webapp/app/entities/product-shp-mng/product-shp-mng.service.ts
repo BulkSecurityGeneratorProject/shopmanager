@@ -12,7 +12,6 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class ProductShpMngService {
 
     private resourceUrl = SERVER_API_URL + 'api/products';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/products';
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
@@ -49,12 +48,6 @@ export class ProductShpMngService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
-    search(req?: any): Observable<ResponseWrapper> {
-        const options = createRequestOption(req);
-        return this.http.get(this.resourceSearchUrl, options)
-            .map((res: any) => this.convertResponse(res));
-    }
-
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         const result = [];
@@ -70,7 +63,7 @@ export class ProductShpMngService {
     private convertItemFromServer(json: any): ProductShpMng {
         const entity: ProductShpMng = Object.assign(new ProductShpMng(), json);
         entity.modified = this.dateUtils
-            .convertDateTimeFromServer(json.modified);
+            .convertLocalDateFromServer(json.modified);
         return entity;
     }
 
@@ -79,8 +72,8 @@ export class ProductShpMngService {
      */
     private convert(product: ProductShpMng): ProductShpMng {
         const copy: ProductShpMng = Object.assign({}, product);
-
-        copy.modified = this.dateUtils.toDate(product.modified);
+        copy.modified = this.dateUtils
+            .convertLocalDateToServer(product.modified);
         return copy;
     }
 }

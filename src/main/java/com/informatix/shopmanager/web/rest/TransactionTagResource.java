@@ -17,9 +17,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing TransactionTag.
@@ -119,19 +116,4 @@ public class TransactionTagResource {
         transactionTagService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/transaction-tags?query=:query : search for the transactionTag corresponding
-     * to the query.
-     *
-     * @param query the query of the transactionTag search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/transaction-tags")
-    @Timed
-    public List<TransactionTagDTO> searchTransactionTags(@RequestParam String query) {
-        log.debug("REST request to search TransactionTags for query {}", query);
-        return transactionTagService.search(query);
-    }
-
 }

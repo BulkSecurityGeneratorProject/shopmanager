@@ -1,4 +1,4 @@
-# ShopManager
+# shopManager
 This application was generated using JHipster 4.13.0, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.13.0](http://www.jhipster.tech/documentation-archive/v4.13.0).
 
 ## Development
@@ -86,21 +86,10 @@ will generate few files:
     create src/main/webapp/app/my-component/my-component.component.ts
     update src/main/webapp/app/app.module.ts
 
-### Doing API-First development using swagger-codegen
-
-[Swagger-Codegen]() is configured for this application. You can generate API code from the `src/main/resources/swagger/api.yml` definition file by running:
-```bash
-./mvnw generate-sources
-```
-Then implements the generated interfaces with `@RestController` classes.
-
-To edit the `api.yml` definition file, you can use a tool such as [Swagger-Editor](). Start a local instance of the swagger-editor using docker by running: `docker-compose -f src/main/docker/swagger-editor.yml up -d`. The editor will then be reachable at [http://localhost:7742](http://localhost:7742).
-
-Refer to [Doing API-First development][] for more details.
 
 ## Building for production
 
-To optimize the ShopManager application for production, run:
+To optimize the shopManager application for production, run:
 
     ./mvnw -Pprod clean package
 
@@ -125,13 +114,7 @@ Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in
 
     yarn test
 
-UI end-to-end tests are powered by [Protractor][], which is built on top of WebDriverJS. They're located in [src/test/javascript/e2e](src/test/javascript/e2e)
-and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`yarn run e2e`) in a second one.
-### Other tests
 
-Performance tests are run by [Gatling][] and written in Scala. They're located in [src/test/gatling](src/test/gatling) and can be run with:
-
-    ./mvnw gatling:execute
 
 For more information, refer to the [Running tests page][].
 
@@ -172,7 +155,7 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [Running tests page]: http://www.jhipster.tech/documentation-archive/v4.13.0/running-tests/
 [Setting up Continuous Integration]: http://www.jhipster.tech/documentation-archive/v4.13.0/setting-up-ci/
 
-[Gatling]: http://gatling.io/
+
 [Node.js]: https://nodejs.org/
 [Yarn]: https://yarnpkg.org/
 [Webpack]: https://webpack.github.io/
@@ -183,7 +166,3 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [Protractor]: https://angular.github.io/protractor/
 [Leaflet]: http://leafletjs.com/
 [DefinitelyTyped]: http://definitelytyped.org/
-[Swagger-Codegen]: https://github.com/swagger-api/swagger-codegen
-[Swagger-Editor]: http://editor.swagger.io
-[Doing API-First development]: http://www.jhipster.tech/documentation-archive/v4.13.0/doing-api-first-development/
-# shopmanager 

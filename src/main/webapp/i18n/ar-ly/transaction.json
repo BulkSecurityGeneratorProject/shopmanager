@@ -4,8 +4,7 @@
             "home": {
                 "title": "Transactions",
                 "createLabel": "Create a new Transaction",
-                "createOrEditLabel": "Create or edit a Transaction",
-                "search": "Search for Transaction"
+                "createOrEditLabel": "Create or edit a Transaction"
             },
             "created": "A new Transaction is created with identifier {{ param }}",
             "updated": "A Transaction is updated with identifier {{ param }}",
@@ -18,8 +17,8 @@
             },
             "type": "Type",
             "amount": "Amount",
+            "keywords": "Keywords",
             "modified": "Modified",
-            "tag": "Tag",
             "product": "Product"
         }
     }

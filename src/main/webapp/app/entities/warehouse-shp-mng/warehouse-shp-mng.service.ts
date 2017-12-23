@@ -12,7 +12,6 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class WarehouseShpMngService {
 
     private resourceUrl = SERVER_API_URL + 'api/warehouses';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/warehouses';
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
@@ -49,12 +48,6 @@ export class WarehouseShpMngService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
-    search(req?: any): Observable<ResponseWrapper> {
-        const options = createRequestOption(req);
-        return this.http.get(this.resourceSearchUrl, options)
-            .map((res: any) => this.convertResponse(res));
-    }
-
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         const result = [];
@@ -70,7 +63,7 @@ export class WarehouseShpMngService {
     private convertItemFromServer(json: any): WarehouseShpMng {
         const entity: WarehouseShpMng = Object.assign(new WarehouseShpMng(), json);
         entity.modified = this.dateUtils
-            .convertDateTimeFromServer(json.modified);
+            .convertLocalDateFromServer(json.modified);
         return entity;
     }
 
@@ -79,8 +72,8 @@ export class WarehouseShpMngService {
      */
     private convert(warehouse: WarehouseShpMng): WarehouseShpMng {
         const copy: WarehouseShpMng = Object.assign({}, warehouse);
-
-        copy.modified = this.dateUtils.toDate(warehouse.modified);
+        copy.modified = this.dateUtils
+            .convertLocalDateToServer(warehouse.modified);
         return copy;
     }
 }

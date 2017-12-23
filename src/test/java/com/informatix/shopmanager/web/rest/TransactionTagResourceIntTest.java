@@ -5,7 +5,6 @@ import com.informatix.shopmanager.ShopManagerApp;
 import com.informatix.shopmanager.domain.TransactionTag;
 import com.informatix.shopmanager.repository.TransactionTagRepository;
 import com.informatix.shopmanager.service.TransactionTagService;
-import com.informatix.shopmanager.repository.search.TransactionTagSearchRepository;
 import com.informatix.shopmanager.service.dto.TransactionTagDTO;
 import com.informatix.shopmanager.service.mapper.TransactionTagMapper;
 import com.informatix.shopmanager.web.rest.errors.ExceptionTranslator;
@@ -60,9 +59,6 @@ public class TransactionTagResourceIntTest {
     private TransactionTagService transactionTagService;
 
     @Autowired
-    private TransactionTagSearchRepository transactionTagSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -104,7 +100,6 @@ public class TransactionTagResourceIntTest {
 
     @Before
     public void initTest() {
-        transactionTagSearchRepository.deleteAll();
         transactionTag = createEntity(em);
     }
 
@@ -126,10 +121,6 @@ public class TransactionTagResourceIntTest {
         TransactionTag testTransactionTag = transactionTagList.get(transactionTagList.size() - 1);
         assertThat(testTransactionTag.getValue()).isEqualTo(DEFAULT_VALUE);
         assertThat(testTransactionTag.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the TransactionTag in Elasticsearch
-        TransactionTag transactionTagEs = transactionTagSearchRepository.findOne(testTransactionTag.getId());
-        assertThat(transactionTagEs).isEqualToIgnoringGivenFields(testTransactionTag);
     }
 
     @Test
@@ -214,7 +205,6 @@ public class TransactionTagResourceIntTest {
     public void updateTransactionTag() throws Exception {
         // Initialize the database
         transactionTagRepository.saveAndFlush(transactionTag);
-        transactionTagSearchRepository.save(transactionTag);
         int databaseSizeBeforeUpdate = transactionTagRepository.findAll().size();
 
         // Update the transactionTag
@@ -237,10 +227,6 @@ public class TransactionTagResourceIntTest {
         TransactionTag testTransactionTag = transactionTagList.get(transactionTagList.size() - 1);
         assertThat(testTransactionTag.getValue()).isEqualTo(UPDATED_VALUE);
         assertThat(testTransactionTag.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the TransactionTag in Elasticsearch
-        TransactionTag transactionTagEs = transactionTagSearchRepository.findOne(testTransactionTag.getId());
-        assertThat(transactionTagEs).isEqualToIgnoringGivenFields(testTransactionTag);
     }
 
     @Test
@@ -267,7 +253,6 @@ public class TransactionTagResourceIntTest {
     public void deleteTransactionTag() throws Exception {
         // Initialize the database
         transactionTagRepository.saveAndFlush(transactionTag);
-        transactionTagSearchRepository.save(transactionTag);
         int databaseSizeBeforeDelete = transactionTagRepository.findAll().size();
 
         // Get the transactionTag
@@ -275,29 +260,9 @@ public class TransactionTagResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean transactionTagExistsInEs = transactionTagSearchRepository.exists(transactionTag.getId());
-        assertThat(transactionTagExistsInEs).isFalse();
-
         // Validate the database is empty
         List<TransactionTag> transactionTagList = transactionTagRepository.findAll();
         assertThat(transactionTagList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchTransactionTag() throws Exception {
-        // Initialize the database
-        transactionTagRepository.saveAndFlush(transactionTag);
-        transactionTagSearchRepository.save(transactionTag);
-
-        // Search the transactionTag
-        restTransactionTagMockMvc.perform(get("/api/_search/transaction-tags?query=id:" + transactionTag.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(transactionTag.getId().intValue())))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
     @Test

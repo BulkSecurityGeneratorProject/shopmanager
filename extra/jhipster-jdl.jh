@@ -1,7 +1,8 @@
 entity Transaction {
 	type TransactionType required
-    amount Integer required
-    modified Instant
+    amount Integer required min(1)
+    keywords String
+    modified LocalDate
 }
 
 enum TransactionType{
@@ -11,25 +12,17 @@ enum TransactionType{
 relationship ManyToOne{
 	Transaction{product} to Product
 }
-relationship OneToMany {
-	Transaction{tag} to TransactionTag
-}
-
-entity TransactionTag {
-	value String required
-    modified Instant
-} 
 
 entity Product {
 	label String required
-    buyingPrice Float required
-    modified Instant
+    buyingPrice Float required min(1)
+    modified LocalDate
 }
 
 entity Warehouse{
-	amount Integer required
-    stays  Integer required
-    modified Instant
+	amount Integer required min(1)
+    stays  Integer required min(0)
+    modified LocalDate
 }
 
 relationship ManyToOne{

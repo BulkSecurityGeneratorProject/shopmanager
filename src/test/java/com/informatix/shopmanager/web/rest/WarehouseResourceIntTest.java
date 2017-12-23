@@ -5,7 +5,6 @@ import com.informatix.shopmanager.ShopManagerApp;
 import com.informatix.shopmanager.domain.Warehouse;
 import com.informatix.shopmanager.repository.WarehouseRepository;
 import com.informatix.shopmanager.service.WarehouseService;
-import com.informatix.shopmanager.repository.search.WarehouseSearchRepository;
 import com.informatix.shopmanager.service.dto.WarehouseDTO;
 import com.informatix.shopmanager.service.mapper.WarehouseMapper;
 import com.informatix.shopmanager.web.rest.errors.ExceptionTranslator;
@@ -25,8 +24,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static com.informatix.shopmanager.web.rest.TestUtil.createFormattingConversionService;
@@ -47,11 +46,11 @@ public class WarehouseResourceIntTest {
     private static final Integer DEFAULT_AMOUNT = 1;
     private static final Integer UPDATED_AMOUNT = 2;
 
-    private static final Integer DEFAULT_STAYS = 1;
-    private static final Integer UPDATED_STAYS = 2;
+    private static final Integer DEFAULT_STAYS = 0;
+    private static final Integer UPDATED_STAYS = 1;
 
-    private static final Instant DEFAULT_MODIFIED = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_MODIFIED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_MODIFIED = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_MODIFIED = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private WarehouseRepository warehouseRepository;
@@ -61,9 +60,6 @@ public class WarehouseResourceIntTest {
 
     @Autowired
     private WarehouseService warehouseService;
-
-    @Autowired
-    private WarehouseSearchRepository warehouseSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -108,7 +104,6 @@ public class WarehouseResourceIntTest {
 
     @Before
     public void initTest() {
-        warehouseSearchRepository.deleteAll();
         warehouse = createEntity(em);
     }
 
@@ -131,10 +126,6 @@ public class WarehouseResourceIntTest {
         assertThat(testWarehouse.getAmount()).isEqualTo(DEFAULT_AMOUNT);
         assertThat(testWarehouse.getStays()).isEqualTo(DEFAULT_STAYS);
         assertThat(testWarehouse.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the Warehouse in Elasticsearch
-        Warehouse warehouseEs = warehouseSearchRepository.findOne(testWarehouse.getId());
-        assertThat(warehouseEs).isEqualToIgnoringGivenFields(testWarehouse);
     }
 
     @Test
@@ -240,7 +231,6 @@ public class WarehouseResourceIntTest {
     public void updateWarehouse() throws Exception {
         // Initialize the database
         warehouseRepository.saveAndFlush(warehouse);
-        warehouseSearchRepository.save(warehouse);
         int databaseSizeBeforeUpdate = warehouseRepository.findAll().size();
 
         // Update the warehouse
@@ -265,10 +255,6 @@ public class WarehouseResourceIntTest {
         assertThat(testWarehouse.getAmount()).isEqualTo(UPDATED_AMOUNT);
         assertThat(testWarehouse.getStays()).isEqualTo(UPDATED_STAYS);
         assertThat(testWarehouse.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the Warehouse in Elasticsearch
-        Warehouse warehouseEs = warehouseSearchRepository.findOne(testWarehouse.getId());
-        assertThat(warehouseEs).isEqualToIgnoringGivenFields(testWarehouse);
     }
 
     @Test
@@ -295,7 +281,6 @@ public class WarehouseResourceIntTest {
     public void deleteWarehouse() throws Exception {
         // Initialize the database
         warehouseRepository.saveAndFlush(warehouse);
-        warehouseSearchRepository.save(warehouse);
         int databaseSizeBeforeDelete = warehouseRepository.findAll().size();
 
         // Get the warehouse
@@ -303,30 +288,9 @@ public class WarehouseResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean warehouseExistsInEs = warehouseSearchRepository.exists(warehouse.getId());
-        assertThat(warehouseExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Warehouse> warehouseList = warehouseRepository.findAll();
         assertThat(warehouseList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchWarehouse() throws Exception {
-        // Initialize the database
-        warehouseRepository.saveAndFlush(warehouse);
-        warehouseSearchRepository.save(warehouse);
-
-        // Search the warehouse
-        restWarehouseMockMvc.perform(get("/api/_search/warehouses?query=id:" + warehouse.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(warehouse.getId().intValue())))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
-            .andExpect(jsonPath("$.[*].stays").value(hasItem(DEFAULT_STAYS)))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
     @Test

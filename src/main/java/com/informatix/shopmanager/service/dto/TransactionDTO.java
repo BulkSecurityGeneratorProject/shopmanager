@@ -1,7 +1,7 @@
 package com.informatix.shopmanager.service.dto;
 
 
-import java.time.Instant;
+import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -20,9 +20,12 @@ public class TransactionDTO implements Serializable {
     private TransactionType type;
 
     @NotNull
+    @Min(value = 1)
     private Integer amount;
 
-    private Instant modified;
+    private String keywords;
+
+    private LocalDate modified;
 
     private Long productId;
 
@@ -50,11 +53,19 @@ public class TransactionDTO implements Serializable {
         this.amount = amount;
     }
 
-    public Instant getModified() {
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public LocalDate getModified() {
         return modified;
     }
 
-    public void setModified(Instant modified) {
+    public void setModified(LocalDate modified) {
         this.modified = modified;
     }
 
@@ -93,6 +104,7 @@ public class TransactionDTO implements Serializable {
             "id=" + getId() +
             ", type='" + getType() + "'" +
             ", amount=" + getAmount() +
+            ", keywords='" + getKeywords() + "'" +
             ", modified='" + getModified() + "'" +
             "}";
     }

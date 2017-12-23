@@ -16,6 +16,7 @@ public class TransactionTagDTO implements Serializable {
     private Long id;
 
     @NotNull
+    @Size(min = 5)
     private String value;
 
     private Instant modified;

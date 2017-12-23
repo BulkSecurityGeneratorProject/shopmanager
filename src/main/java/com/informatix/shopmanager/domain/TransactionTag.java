@@ -6,7 +6,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -17,7 +16,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "transaction_tag")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "transactiontag")
 public class TransactionTag implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,6 +25,7 @@ public class TransactionTag implements Serializable {
     private Long id;
 
     @NotNull
+    @Size(min = 5)
     @Column(name = "jhi_value", nullable = false)
     private String value;
 

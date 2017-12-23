@@ -22,9 +22,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Transaction.
@@ -127,22 +124,4 @@ public class TransactionResource {
         transactionService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/transactions?query=:query : search for the transaction corresponding
-     * to the query.
-     *
-     * @param query the query of the transaction search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/transactions")
-    @Timed
-    public ResponseEntity<List<TransactionDTO>> searchTransactions(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Transactions for query {}", query);
-        Page<TransactionDTO> page = transactionService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/transactions");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
 }

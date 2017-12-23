@@ -22,6 +22,7 @@ export class TransactionShpMngDialogComponent implements OnInit {
     isSaving: boolean;
 
     products: ProductShpMng[];
+    modifiedDp: any;
 
     constructor(
         public activeModal: NgbActiveModal,

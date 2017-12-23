@@ -6,9 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -17,7 +16,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "product")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "product")
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,11 +29,12 @@ public class Product implements Serializable {
     private String label;
 
     @NotNull
+    @DecimalMin(value = "1")
     @Column(name = "buying_price", nullable = false)
     private Float buyingPrice;
 
     @Column(name = "modified")
-    private Instant modified;
+    private LocalDate modified;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -72,16 +71,16 @@ public class Product implements Serializable {
         this.buyingPrice = buyingPrice;
     }
 
-    public Instant getModified() {
+    public LocalDate getModified() {
         return modified;
     }
 
-    public Product modified(Instant modified) {
+    public Product modified(LocalDate modified) {
         this.modified = modified;
         return this;
     }
 
-    public void setModified(Instant modified) {
+    public void setModified(LocalDate modified) {
         this.modified = modified;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

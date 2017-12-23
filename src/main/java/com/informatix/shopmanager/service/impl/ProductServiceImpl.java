@@ -3,7 +3,6 @@ package com.informatix.shopmanager.service.impl;
 import com.informatix.shopmanager.service.ProductService;
 import com.informatix.shopmanager.domain.Product;
 import com.informatix.shopmanager.repository.ProductRepository;
-import com.informatix.shopmanager.repository.search.ProductSearchRepository;
 import com.informatix.shopmanager.service.dto.ProductDTO;
 import com.informatix.shopmanager.service.mapper.ProductMapper;
 import org.slf4j.Logger;
@@ -13,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Product.
@@ -29,12 +26,9 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductMapper productMapper;
 
-    private final ProductSearchRepository productSearchRepository;
-
-    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper, ProductSearchRepository productSearchRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
-        this.productSearchRepository = productSearchRepository;
     }
 
     /**
@@ -48,9 +42,7 @@ public class ProductServiceImpl implements ProductService{
         log.debug("Request to save Product : {}", productDTO);
         Product product = productMapper.toEntity(productDTO);
         product = productRepository.save(product);
-        ProductDTO result = productMapper.toDto(product);
-        productSearchRepository.save(product);
-        return result;
+        return productMapper.toDto(product);
     }
 
     /**
@@ -90,21 +82,5 @@ public class ProductServiceImpl implements ProductService{
     public void delete(Long id) {
         log.debug("Request to delete Product : {}", id);
         productRepository.delete(id);
-        productSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the product corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ProductDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Products for query {}", query);
-        Page<Product> result = productSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(productMapper::toDto);
     }
 }

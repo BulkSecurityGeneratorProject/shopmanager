@@ -13,15 +13,17 @@
             "fieldName": "buyingPrice",
             "fieldType": "Float",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 1
         },
         {
             "fieldName": "modified",
-            "fieldType": "Instant"
+            "fieldType": "LocalDate"
         }
     ],
-    "changelogDate": "20171223090930",
+    "changelogDate": "20171223162700",
     "entityTableName": "product",
     "dto": "mapstruct",
     "pagination": "pagination",

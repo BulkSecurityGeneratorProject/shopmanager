@@ -6,9 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -17,7 +16,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "warehouse")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "warehouse")
 public class Warehouse implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,15 +25,17 @@ public class Warehouse implements Serializable {
     private Long id;
 
     @NotNull
+    @Min(value = 1)
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
     @NotNull
+    @Min(value = 0)
     @Column(name = "stays", nullable = false)
     private Integer stays;
 
     @Column(name = "modified")
-    private Instant modified;
+    private LocalDate modified;
 
     @ManyToOne
     private Product product;
@@ -75,16 +75,16 @@ public class Warehouse implements Serializable {
         this.stays = stays;
     }
 
-    public Instant getModified() {
+    public LocalDate getModified() {
         return modified;
     }
 
-    public Warehouse modified(Instant modified) {
+    public Warehouse modified(LocalDate modified) {
         this.modified = modified;
         return this;
     }
 
-    public void setModified(Instant modified) {
+    public void setModified(LocalDate modified) {
         this.modified = modified;
     }
 

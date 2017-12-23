@@ -3,7 +3,6 @@ package com.informatix.shopmanager.service.impl;
 import com.informatix.shopmanager.service.TransactionService;
 import com.informatix.shopmanager.domain.Transaction;
 import com.informatix.shopmanager.repository.TransactionRepository;
-import com.informatix.shopmanager.repository.search.TransactionSearchRepository;
 import com.informatix.shopmanager.service.dto.TransactionDTO;
 import com.informatix.shopmanager.service.mapper.TransactionMapper;
 import org.slf4j.Logger;
@@ -13,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Transaction.
@@ -29,12 +26,9 @@ public class TransactionServiceImpl implements TransactionService{
 
     private final TransactionMapper transactionMapper;
 
-    private final TransactionSearchRepository transactionSearchRepository;
-
-    public TransactionServiceImpl(TransactionRepository transactionRepository, TransactionMapper transactionMapper, TransactionSearchRepository transactionSearchRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
-        this.transactionSearchRepository = transactionSearchRepository;
     }
 
     /**
@@ -48,9 +42,7 @@ public class TransactionServiceImpl implements TransactionService{
         log.debug("Request to save Transaction : {}", transactionDTO);
         Transaction transaction = transactionMapper.toEntity(transactionDTO);
         transaction = transactionRepository.save(transaction);
-        TransactionDTO result = transactionMapper.toDto(transaction);
-        transactionSearchRepository.save(transaction);
-        return result;
+        return transactionMapper.toDto(transaction);
     }
 
     /**
@@ -90,21 +82,5 @@ public class TransactionServiceImpl implements TransactionService{
     public void delete(Long id) {
         log.debug("Request to delete Transaction : {}", id);
         transactionRepository.delete(id);
-        transactionSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the transaction corresponding to the query.
-     *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Page<TransactionDTO> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of Transactions for query {}", query);
-        Page<Transaction> result = transactionSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(transactionMapper::toDto);
     }
 }

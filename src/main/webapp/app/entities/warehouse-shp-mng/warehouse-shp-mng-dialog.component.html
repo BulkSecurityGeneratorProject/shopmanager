@@ -15,11 +15,15 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.warehouse.amount" for="field_amount">Amount</label>
             <input type="number" class="form-control" name="amount" id="field_amount"
-                [(ngModel)]="warehouse.amount" required/>
+                [(ngModel)]="warehouse.amount" required min="1"/>
             <div [hidden]="!(editForm.controls.amount?.dirty && editForm.controls.amount?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.amount?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.amount?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1 }">
+                    This field should be at least 1.
                 </small>
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.amount?.errors?.number" jhiTranslate="entity.validation.number">
@@ -30,11 +34,15 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.warehouse.stays" for="field_stays">Stays</label>
             <input type="number" class="form-control" name="stays" id="field_stays"
-                [(ngModel)]="warehouse.stays" required/>
+                [(ngModel)]="warehouse.stays" required min="0"/>
             <div [hidden]="!(editForm.controls.stays?.dirty && editForm.controls.stays?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.stays?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.stays?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
                 </small>
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.stays?.errors?.number" jhiTranslate="entity.validation.number">
@@ -44,9 +52,12 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.warehouse.modified" for="field_modified">Modified</label>
-            <div class="d-flex">
-                <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="warehouse.modified"
+            <div class="input-group">
+                <input id="field_modified" type="text" class="form-control" name="modified" ngbDatepicker  #modifiedDp="ngbDatepicker" [(ngModel)]="warehouse.modified"
                 />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="modifiedDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
             </div>
         </div>
 

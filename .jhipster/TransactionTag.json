@@ -13,15 +13,17 @@
             "fieldName": "value",
             "fieldType": "String",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": 5
         },
         {
             "fieldName": "modified",
             "fieldType": "Instant"
         }
     ],
-    "changelogDate": "20171223090929",
+    "changelogDate": "20171223162659",
     "entityTableName": "transaction_tag",
     "dto": "mapstruct",
     "pagination": "no",

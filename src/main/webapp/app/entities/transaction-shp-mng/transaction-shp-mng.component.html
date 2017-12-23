@@ -3,26 +3,13 @@
         <span jhiTranslate="shopManagerApp.transaction.home.title">Transactions</span>
         <button class="btn btn-primary float-right jh-create-entity create-transaction-shp-mng" [routerLink]="['/', { outlets: { popup: ['transaction-shp-mng-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="shopManagerApp.transaction.home.createLabel">
+            <span  jhiTranslate="shopManagerApp.transaction.home.createLabel">
             Create new Transaction
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
     <div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'shopManagerApp.transaction.home.search' | translate }}">
-                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
-                    </button>
-                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
     </div>
     <br/>
     <div class="table-responsive" *ngIf="transactions">
@@ -32,6 +19,7 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="type"><span jhiTranslate="shopManagerApp.transaction.type">Type</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="amount"><span jhiTranslate="shopManagerApp.transaction.amount">Amount</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="keywords"><span jhiTranslate="shopManagerApp.transaction.keywords">Keywords</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="modified"><span jhiTranslate="shopManagerApp.transaction.modified">Modified</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="productId"><span jhiTranslate="shopManagerApp.transaction.product">Product</span> <span class="fa fa-sort"></span></th>
             <th></th>
@@ -42,7 +30,8 @@
                 <td><a [routerLink]="['../transaction-shp-mng', transaction.id ]">{{transaction.id}}</a></td>
                 <td jhiTranslate="{{'shopManagerApp.TransactionType.' + transaction.type}}">{{transaction.type}}</td>
                 <td>{{transaction.amount}}</td>
-                <td>{{transaction.modified | date:'medium'}}</td>
+                <td>{{transaction.keywords}}</td>
+                <td>{{transaction.modified | date:'mediumDate'}}</td>
                 <td>
                     <div *ngIf="transaction.productId">
                         <a [routerLink]="['../product-shp-mng', transaction.productId  ]" >{{transaction.productId}}</a>

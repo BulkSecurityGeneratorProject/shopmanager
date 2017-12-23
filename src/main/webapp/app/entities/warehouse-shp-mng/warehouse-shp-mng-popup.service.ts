@@ -1,7 +1,6 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DatePipe } from '@angular/common';
 import { WarehouseShpMng } from './warehouse-shp-mng.model';
 import { WarehouseShpMngService } from './warehouse-shp-mng.service';
 
@@ -10,7 +9,6 @@ export class WarehouseShpMngPopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
-        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private warehouseService: WarehouseShpMngService
@@ -28,8 +26,13 @@ export class WarehouseShpMngPopupService {
 
             if (id) {
                 this.warehouseService.find(id).subscribe((warehouse) => {
-                    warehouse.modified = this.datePipe
-                        .transform(warehouse.modified, 'yyyy-MM-ddTHH:mm:ss');
+                    if (warehouse.modified) {
+                        warehouse.modified = {
+                            year: warehouse.modified.getFullYear(),
+                            month: warehouse.modified.getMonth() + 1,
+                            day: warehouse.modified.getDate()
+                        };
+                    }
                     this.ngbModalRef = this.warehouseModalRef(component, warehouse);
                     resolve(this.ngbModalRef);
                 });

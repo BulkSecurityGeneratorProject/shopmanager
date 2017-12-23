@@ -17,28 +17,19 @@ eureka:
     client:
         enabled: true
     instance:
-        appname: ShopManager
-        instanceId: ShopManager:${spring.application.instance-id:${random.value}}
+        appname: shopManager
+        instanceId: shopManager:${spring.application.instance-id:${random.value}}
 
 spring:
     application:
-        name: ShopManager
+        name: shopManager
     jackson:
         serialization.write_dates_as_timestamps: false
     cache:
         type: none
-    cloud:
-        stream:
-            kafka:
-                binder:
-                    brokers: localhost
-                    zk-nodes: localhost
-            bindings:
-                output:
-                    destination: topic-jhipster
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:ShopManager;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:mem:shopManager;DB_CLOSE_DELAY=-1
         name:
         username:
         password:
@@ -58,14 +49,6 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
             hibernate.hbm2ddl.auto: validate
-    data:
-        elasticsearch:
-            cluster-name:
-            cluster-nodes:
-            properties:
-                path:
-                    logs: target/elasticsearch/log
-                    data: target/elasticsearch/data
     mail:
         host: localhost
     messages:
@@ -111,7 +94,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: 19538c810f2725d55dc3424e16355e1405469481
+                secret: b81ee9cf4137d547fa042c5d9db41f0faa3b7fdd
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration

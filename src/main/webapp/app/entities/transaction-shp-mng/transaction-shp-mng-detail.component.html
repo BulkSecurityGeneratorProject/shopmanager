@@ -12,9 +12,13 @@
         <dd>
             <span>{{transaction.amount}}</span>
         </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.keywords">Keywords</span></dt>
+        <dd>
+            <span>{{transaction.keywords}}</span>
+        </dd>
         <dt><span jhiTranslate="shopManagerApp.transaction.modified">Modified</span></dt>
         <dd>
-            <span>{{transaction.modified | date:'medium'}}</span>
+            <span>{{transaction.modified | date:'mediumDate'}}</span>
         </dd>
         <dt><span jhiTranslate="shopManagerApp.transaction.product">Product</span></dt>
         <dd>

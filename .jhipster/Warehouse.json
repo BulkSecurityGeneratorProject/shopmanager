@@ -13,22 +13,26 @@
             "fieldName": "amount",
             "fieldType": "Integer",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 1
         },
         {
             "fieldName": "stays",
             "fieldType": "Integer",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         },
         {
             "fieldName": "modified",
-            "fieldType": "Instant"
+            "fieldType": "LocalDate"
         }
     ],
-    "changelogDate": "20171223090931",
+    "changelogDate": "20171223162701",
     "entityTableName": "warehouse",
     "dto": "mapstruct",
     "pagination": "pagination",

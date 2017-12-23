@@ -1,7 +1,6 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DatePipe } from '@angular/common';
 import { TransactionShpMng } from './transaction-shp-mng.model';
 import { TransactionShpMngService } from './transaction-shp-mng.service';
 
@@ -10,7 +9,6 @@ export class TransactionShpMngPopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
-        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private transactionService: TransactionShpMngService
@@ -28,8 +26,13 @@ export class TransactionShpMngPopupService {
 
             if (id) {
                 this.transactionService.find(id).subscribe((transaction) => {
-                    transaction.modified = this.datePipe
-                        .transform(transaction.modified, 'yyyy-MM-ddTHH:mm:ss');
+                    if (transaction.modified) {
+                        transaction.modified = {
+                            year: transaction.modified.getFullYear(),
+                            month: transaction.modified.getMonth() + 1,
+                            day: transaction.modified.getDate()
+                        };
+                    }
                     this.ngbModalRef = this.transactionModalRef(component, transaction);
                     resolve(this.ngbModalRef);
                 });

@@ -1,7 +1,7 @@
 package com.informatix.shopmanager.service.dto;
 
 
-import java.time.Instant;
+import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -16,12 +16,14 @@ public class WarehouseDTO implements Serializable {
     private Long id;
 
     @NotNull
+    @Min(value = 1)
     private Integer amount;
 
     @NotNull
+    @Min(value = 0)
     private Integer stays;
 
-    private Instant modified;
+    private LocalDate modified;
 
     private Long productId;
 
@@ -49,11 +51,11 @@ public class WarehouseDTO implements Serializable {
         this.stays = stays;
     }
 
-    public Instant getModified() {
+    public LocalDate getModified() {
         return modified;
     }
 
-    public void setModified(Instant modified) {
+    public void setModified(LocalDate modified) {
         this.modified = modified;
     }
 
