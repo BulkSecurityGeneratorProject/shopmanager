@@ -1,0 +1,24 @@
+{
+    "shopManagerApp": {
+        "transactionTag" : {
+            "home": {
+                "title": "TransactionTags",
+                "createLabel": "Créer un nouveau Transaction Tag",
+                "createOrEditLabel": "Créer ou éditer un Transaction Tag",
+                "search": "Recherche pour Transaction Tag"
+            },
+            "created": "Un nouveau Transaction Tag a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Transaction Tag avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Transaction Tag avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Transaction Tag {{ id }} ?"
+            },
+            "detail": {
+                "title": "Transaction Tag"
+            },
+            "value": "Value",
+            "modified": "Modified",
+            "transaction": "Transaction"
+        }
+    }
+}

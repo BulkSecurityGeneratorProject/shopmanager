@@ -1,0 +1,79 @@
+<div>
+    <h2>
+        <span jhiTranslate="shopManagerApp.transactionTag.home.title">Transaction Tags</span>
+        <button class="btn btn-primary float-right jh-create-entity create-transaction-tag-shp-mng" [routerLink]="['/', { outlets: { popup: ['transaction-tag-shp-mng-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="shopManagerApp.transactionTag.home.createLabel">
+            Create new Transaction Tag
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'shopManagerApp.transactionTag.home.search' | translate }}">
+                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="transactionTags">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="shopManagerApp.transactionTag.value">Value</span></th>
+            <th><span jhiTranslate="shopManagerApp.transactionTag.modified">Modified</span></th>
+            <th><span jhiTranslate="shopManagerApp.transactionTag.transaction">Transaction</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let transactionTag of transactionTags ;trackBy: trackId">
+                <td><a [routerLink]="['../transaction-tag-shp-mng', transactionTag.id ]">{{transactionTag.id}}</a></td>
+                <td>{{transactionTag.value}}</td>
+                <td>{{transactionTag.modified | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="transactionTag.transactionId">
+                        <a [routerLink]="['../transaction-shp-mng', transactionTag.transactionId  ]" >{{transactionTag.transactionId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../transaction-tag-shp-mng', transactionTag.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'transaction-tag-shp-mng/'+ transactionTag.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'transaction-tag-shp-mng/'+ transactionTag.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

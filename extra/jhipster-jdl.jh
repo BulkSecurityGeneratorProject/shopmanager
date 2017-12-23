@@ -1,0 +1,48 @@
+entity Transaction {
+	type TransactionType required
+    amount Integer required
+    modified Instant
+}
+
+enum TransactionType{
+	DEBIT, INCOME
+}
+
+relationship ManyToOne{
+	Transaction{product} to Product
+}
+relationship OneToMany {
+	Transaction{tag} to TransactionTag
+}
+
+entity TransactionTag {
+	value String required
+    modified Instant
+} 
+
+entity Product {
+	label String required
+    buyingPrice Float required
+    modified Instant
+}
+
+entity Warehouse{
+	amount Integer required
+    stays  Integer required
+    modified Instant
+}
+
+relationship ManyToOne{
+	Warehouse{product} to Product
+}
+
+// Set pagination options
+paginate Transaction with infinite-scroll
+paginate Warehouse, Product with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl 
+// Set an angular suffix
+angularSuffix * with shpMng

@@ -1,0 +1,40 @@
+
+<div *ngIf="warehouse">
+    <h2><span jhiTranslate="shopManagerApp.warehouse.detail.title">Warehouse</span> {{warehouse.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="shopManagerApp.warehouse.amount">Amount</span></dt>
+        <dd>
+            <span>{{warehouse.amount}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.warehouse.stays">Stays</span></dt>
+        <dd>
+            <span>{{warehouse.stays}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.warehouse.modified">Modified</span></dt>
+        <dd>
+            <span>{{warehouse.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.warehouse.product">Product</span></dt>
+        <dd>
+            <div *ngIf="warehouse.productId">
+                <a [routerLink]="['/product-shp-mng', warehouse.productId]">{{warehouse.productId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'warehouse-shp-mng/'+ warehouse.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

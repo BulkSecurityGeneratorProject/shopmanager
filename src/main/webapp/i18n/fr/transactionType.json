@@ -1,0 +1,9 @@
+{
+    "shopManagerApp": {
+        "TransactionType" : {
+            "null": "",
+            "DEBIT": "DEBIT",
+            "INCOME": "INCOME"
+        }
+    }
+}
