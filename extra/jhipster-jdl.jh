@@ -1,6 +1,7 @@
 entity Transaction {
 	type TransactionType required
     amount Integer required min(1)
+    sellingPrice Float required min(0)
     keywords String
     description String
     done LocalDate
@@ -23,6 +24,7 @@ relationship OneToMany{
 entity Product {
 	label String required
     buyingPrice Float required min(1)
+    sellingPrice Float required min(1)
     amount Integer required min(1)
     stays  Integer required min(0)
     modified LocalDate
