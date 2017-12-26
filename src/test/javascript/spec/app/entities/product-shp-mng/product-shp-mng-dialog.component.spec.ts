@@ -8,6 +8,7 @@ import { ShopManagerTestModule } from '../../../test.module';
 import { ProductShpMngDialogComponent } from '../../../../../../main/webapp/app/entities/product-shp-mng/product-shp-mng-dialog.component';
 import { ProductShpMngService } from '../../../../../../main/webapp/app/entities/product-shp-mng/product-shp-mng.service';
 import { ProductShpMng } from '../../../../../../main/webapp/app/entities/product-shp-mng/product-shp-mng.model';
+import { UserService } from '../../../../../../main/webapp/app/shared';
 
 describe('Component Tests', () => {
 
@@ -23,6 +24,7 @@ describe('Component Tests', () => {
                 imports: [ShopManagerTestModule],
                 declarations: [ProductShpMngDialogComponent],
                 providers: [
+                    UserService,
                     ProductShpMngService
                 ]
             })

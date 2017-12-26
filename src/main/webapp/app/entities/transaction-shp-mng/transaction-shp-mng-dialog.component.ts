@@ -10,6 +10,7 @@ import { TransactionShpMng } from './transaction-shp-mng.model';
 import { TransactionShpMngPopupService } from './transaction-shp-mng-popup.service';
 import { TransactionShpMngService } from './transaction-shp-mng.service';
 import { ProductShpMng, ProductShpMngService } from '../product-shp-mng';
+import { User, UserService } from '../../shared';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -22,13 +23,16 @@ export class TransactionShpMngDialogComponent implements OnInit {
     isSaving: boolean;
 
     products: ProductShpMng[];
-    modifiedDp: any;
+
+    users: User[];
+    doneDp: any;
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private transactionService: TransactionShpMngService,
         private productService: ProductShpMngService,
+        private userService: UserService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -37,6 +41,8 @@ export class TransactionShpMngDialogComponent implements OnInit {
         this.isSaving = false;
         this.productService.query()
             .subscribe((res: ResponseWrapper) => { this.products = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.userService.query()
+            .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -74,6 +80,10 @@ export class TransactionShpMngDialogComponent implements OnInit {
     }
 
     trackProductById(index: number, item: ProductShpMng) {
+        return item.id;
+    }
+
+    trackUserById(index: number, item: User) {
         return item.id;
     }
 }

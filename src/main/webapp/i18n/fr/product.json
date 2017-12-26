@@ -17,7 +17,11 @@
             },
             "label": "Label",
             "buyingPrice": "Buying Price",
-            "modified": "Modified"
+            "amount": "Amount",
+            "stays": "Stays",
+            "modified": "Modified",
+            "product": "Product",
+            "user": "User"
         }
     }
 }

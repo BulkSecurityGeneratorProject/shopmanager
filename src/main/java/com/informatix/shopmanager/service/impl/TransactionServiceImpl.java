@@ -8,9 +8,12 @@ import com.informatix.shopmanager.service.mapper.TransactionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 
 /**
@@ -55,8 +58,11 @@ public class TransactionServiceImpl implements TransactionService{
     @Transactional(readOnly = true)
     public Page<TransactionDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Transactions");
-        return transactionRepository.findAll(pageable)
-            .map(transactionMapper::toDto);
+        return new  PageImpl<> (transactionRepository.findByUserIsCurrentUser().
+            stream()
+            .skip(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .map(transactionMapper::toDto).collect(Collectors.toList()));
     }
 
     /**

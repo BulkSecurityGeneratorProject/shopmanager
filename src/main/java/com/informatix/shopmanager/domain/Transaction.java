@@ -39,11 +39,17 @@ public class Transaction implements Serializable {
     @Column(name = "keywords")
     private String keywords;
 
-    @Column(name = "modified")
-    private LocalDate modified;
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "done")
+    private LocalDate done;
 
     @ManyToOne
     private Product product;
+
+    @ManyToOne
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -93,17 +99,44 @@ public class Transaction implements Serializable {
         this.keywords = keywords;
     }
 
-    public LocalDate getModified() {
-        return modified;
+    public String getDescription() {
+        return description;
     }
 
-    public Transaction modified(LocalDate modified) {
-        this.modified = modified;
+    public Transaction description(String description) {
+        this.description = description;
         return this;
     }
 
-    public void setModified(LocalDate modified) {
-        this.modified = modified;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getDone() {
+        return done;
+    }
+
+    public Transaction done(LocalDate done) {
+        this.done = done;
+        return this;
+    }
+
+    public void setDone(LocalDate done) {
+        this.done = done;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public Transaction user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Product getProduct() {
@@ -147,7 +180,8 @@ public class Transaction implements Serializable {
             ", type='" + getType() + "'" +
             ", amount=" + getAmount() +
             ", keywords='" + getKeywords() + "'" +
-            ", modified='" + getModified() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", done='" + getDone() + "'" +
             "}";
     }
 }

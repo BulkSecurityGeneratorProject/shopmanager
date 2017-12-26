@@ -2,6 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { ShopManagerSharedModule } from '../../shared';
+import { ShopManagerAdminModule } from '../../admin/admin.module';
 import {
     TransactionShpMngService,
     TransactionShpMngPopupService,
@@ -23,6 +24,7 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         ShopManagerSharedModule,
+        ShopManagerAdminModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [

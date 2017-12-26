@@ -8,9 +8,12 @@ import com.informatix.shopmanager.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 
 /**
@@ -55,8 +58,11 @@ public class ProductServiceImpl implements ProductService{
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Products");
-        return productRepository.findAll(pageable)
-            .map(productMapper::toDto);
+        return new PageImpl<>(productRepository.findByUserIsCurrentUser().
+            stream()
+            .skip(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .map(productMapper::toDto).collect(Collectors.toList()));
     }
 
     /**

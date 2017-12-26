@@ -1,5 +1,6 @@
 package com.informatix.shopmanager.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +9,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -33,8 +36,26 @@ public class Product implements Serializable {
     @Column(name = "buying_price", nullable = false)
     private Float buyingPrice;
 
+    @NotNull
+    @Min(value = 1)
+    @Column(name = "amount", nullable = false)
+    private Integer amount;
+
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "stays", nullable = false)
+    private Integer stays;
+
     @Column(name = "modified")
     private LocalDate modified;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Transaction> products = new HashSet<>();
+
+    @ManyToOne
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -71,6 +92,32 @@ public class Product implements Serializable {
         this.buyingPrice = buyingPrice;
     }
 
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public Product amount(Integer amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Integer getStays() {
+        return stays;
+    }
+
+    public Product stays(Integer stays) {
+        this.stays = stays;
+        return this;
+    }
+
+    public void setStays(Integer stays) {
+        this.stays = stays;
+    }
+
     public LocalDate getModified() {
         return modified;
     }
@@ -82,6 +129,44 @@ public class Product implements Serializable {
 
     public void setModified(LocalDate modified) {
         this.modified = modified;
+    }
+
+    public Set<Transaction> getProducts() {
+        return products;
+    }
+
+    public Product products(Set<Transaction> transactions) {
+        this.products = transactions;
+        return this;
+    }
+
+    public Product addProduct(Transaction transaction) {
+        this.products.add(transaction);
+        transaction.setProduct(this);
+        return this;
+    }
+
+    public Product removeProduct(Transaction transaction) {
+        this.products.remove(transaction);
+        transaction.setProduct(null);
+        return this;
+    }
+
+    public void setProducts(Set<Transaction> transactions) {
+        this.products = transactions;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Product user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -111,6 +196,8 @@ public class Product implements Serializable {
             "id=" + getId() +
             ", label='" + getLabel() + "'" +
             ", buyingPrice=" + getBuyingPrice() +
+            ", amount=" + getAmount() +
+            ", stays=" + getStays() +
             ", modified='" + getModified() + "'" +
             "}";
     }

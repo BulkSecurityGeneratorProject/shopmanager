@@ -62,8 +62,8 @@ export class TransactionShpMngService {
      */
     private convertItemFromServer(json: any): TransactionShpMng {
         const entity: TransactionShpMng = Object.assign(new TransactionShpMng(), json);
-        entity.modified = this.dateUtils
-            .convertLocalDateFromServer(json.modified);
+        entity.done = this.dateUtils
+            .convertLocalDateFromServer(json.done);
         return entity;
     }
 
@@ -72,8 +72,8 @@ export class TransactionShpMngService {
      */
     private convert(transaction: TransactionShpMng): TransactionShpMng {
         const copy: TransactionShpMng = Object.assign({}, transaction);
-        copy.modified = this.dateUtils
-            .convertLocalDateToServer(transaction.modified);
+        copy.done = this.dateUtils
+            .convertLocalDateToServer(transaction.done);
         return copy;
     }
 }

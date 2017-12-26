@@ -6,6 +6,18 @@
             "relationshipName": "product",
             "otherEntityName": "product",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [
@@ -31,7 +43,11 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "modified",
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "done",
             "fieldType": "LocalDate"
         }
     ],

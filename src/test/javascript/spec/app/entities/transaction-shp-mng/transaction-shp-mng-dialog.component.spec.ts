@@ -9,6 +9,7 @@ import { TransactionShpMngDialogComponent } from '../../../../../../main/webapp/
 import { TransactionShpMngService } from '../../../../../../main/webapp/app/entities/transaction-shp-mng/transaction-shp-mng.service';
 import { TransactionShpMng } from '../../../../../../main/webapp/app/entities/transaction-shp-mng/transaction-shp-mng.model';
 import { ProductShpMngService } from '../../../../../../main/webapp/app/entities/product-shp-mng';
+import { UserService } from '../../../../../../main/webapp/app/shared';
 
 describe('Component Tests', () => {
 
@@ -25,6 +26,7 @@ describe('Component Tests', () => {
                 declarations: [TransactionShpMngDialogComponent],
                 providers: [
                     ProductShpMngService,
+                    UserService,
                     TransactionShpMngService
                 ]
             })

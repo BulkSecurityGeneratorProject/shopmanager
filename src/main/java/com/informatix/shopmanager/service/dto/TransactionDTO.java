@@ -25,9 +25,13 @@ public class TransactionDTO implements Serializable {
 
     private String keywords;
 
-    private LocalDate modified;
+    private String description;
+
+    private LocalDate done;
 
     private Long productId;
+
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -61,12 +65,20 @@ public class TransactionDTO implements Serializable {
         this.keywords = keywords;
     }
 
-    public LocalDate getModified() {
-        return modified;
+    public String getDescription() {
+        return description;
     }
 
-    public void setModified(LocalDate modified) {
-        this.modified = modified;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getDone() {
+        return done;
+    }
+
+    public void setDone(LocalDate done) {
+        this.done = done;
     }
 
     public Long getProductId() {
@@ -75,6 +87,14 @@ public class TransactionDTO implements Serializable {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -105,7 +125,8 @@ public class TransactionDTO implements Serializable {
             ", type='" + getType() + "'" +
             ", amount=" + getAmount() +
             ", keywords='" + getKeywords() + "'" +
-            ", modified='" + getModified() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", done='" + getDone() + "'" +
             "}";
     }
 }

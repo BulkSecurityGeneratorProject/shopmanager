@@ -30,7 +30,19 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="amount" type="integer">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="stays" type="integer">
+                <constraints nullable="false" />
+            </column>
+
             <column name="modified" type="date">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

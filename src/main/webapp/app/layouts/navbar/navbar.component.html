@@ -53,6 +53,18 @@
                             <span jhiTranslate="global.menu.entities.warehouseShpMng">Warehouse Shp Mng</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="transaction-shp-mng" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.transactionShpMng">Transaction Shp Mng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="product-shp-mng" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.productShpMng">Product Shp Mng</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

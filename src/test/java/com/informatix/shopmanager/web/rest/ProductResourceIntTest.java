@@ -49,6 +49,12 @@ public class ProductResourceIntTest {
     private static final Float DEFAULT_BUYING_PRICE = 1F;
     private static final Float UPDATED_BUYING_PRICE = 2F;
 
+    private static final Integer DEFAULT_AMOUNT = 1;
+    private static final Integer UPDATED_AMOUNT = 2;
+
+    private static final Integer DEFAULT_STAYS = 0;
+    private static final Integer UPDATED_STAYS = 1;
+
     private static final LocalDate DEFAULT_MODIFIED = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_MODIFIED = LocalDate.now(ZoneId.systemDefault());
 
@@ -98,6 +104,8 @@ public class ProductResourceIntTest {
         Product product = new Product()
             .label(DEFAULT_LABEL)
             .buyingPrice(DEFAULT_BUYING_PRICE)
+            .amount(DEFAULT_AMOUNT)
+            .stays(DEFAULT_STAYS)
             .modified(DEFAULT_MODIFIED);
         return product;
     }
@@ -125,6 +133,8 @@ public class ProductResourceIntTest {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getLabel()).isEqualTo(DEFAULT_LABEL);
         assertThat(testProduct.getBuyingPrice()).isEqualTo(DEFAULT_BUYING_PRICE);
+        assertThat(testProduct.getAmount()).isEqualTo(DEFAULT_AMOUNT);
+        assertThat(testProduct.getStays()).isEqualTo(DEFAULT_STAYS);
         assertThat(testProduct.getModified()).isEqualTo(DEFAULT_MODIFIED);
     }
 
@@ -188,6 +198,44 @@ public class ProductResourceIntTest {
 
     @Test
     @Transactional
+    public void checkAmountIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setAmount(null);
+
+        // Create the Product, which fails.
+        ProductDTO productDTO = productMapper.toDto(product);
+
+        restProductMockMvc.perform(post("/api/products")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkStaysIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productRepository.findAll().size();
+        // set the field null
+        product.setStays(null);
+
+        // Create the Product, which fails.
+        ProductDTO productDTO = productMapper.toDto(product);
+
+        restProductMockMvc.perform(post("/api/products")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(productDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Product> productList = productRepository.findAll();
+        assertThat(productList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllProducts() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
@@ -199,6 +247,8 @@ public class ProductResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
             .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL.toString())))
             .andExpect(jsonPath("$.[*].buyingPrice").value(hasItem(DEFAULT_BUYING_PRICE.doubleValue())))
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
+            .andExpect(jsonPath("$.[*].stays").value(hasItem(DEFAULT_STAYS)))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
     }
 
@@ -215,6 +265,8 @@ public class ProductResourceIntTest {
             .andExpect(jsonPath("$.id").value(product.getId().intValue()))
             .andExpect(jsonPath("$.label").value(DEFAULT_LABEL.toString()))
             .andExpect(jsonPath("$.buyingPrice").value(DEFAULT_BUYING_PRICE.doubleValue()))
+            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
+            .andExpect(jsonPath("$.stays").value(DEFAULT_STAYS))
             .andExpect(jsonPath("$.modified").value(DEFAULT_MODIFIED.toString()));
     }
 
@@ -240,6 +292,8 @@ public class ProductResourceIntTest {
         updatedProduct
             .label(UPDATED_LABEL)
             .buyingPrice(UPDATED_BUYING_PRICE)
+            .amount(UPDATED_AMOUNT)
+            .stays(UPDATED_STAYS)
             .modified(UPDATED_MODIFIED);
         ProductDTO productDTO = productMapper.toDto(updatedProduct);
 
@@ -254,6 +308,8 @@ public class ProductResourceIntTest {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getLabel()).isEqualTo(UPDATED_LABEL);
         assertThat(testProduct.getBuyingPrice()).isEqualTo(UPDATED_BUYING_PRICE);
+        assertThat(testProduct.getAmount()).isEqualTo(UPDATED_AMOUNT);
+        assertThat(testProduct.getStays()).isEqualTo(UPDATED_STAYS);
         assertThat(testProduct.getModified()).isEqualTo(UPDATED_MODIFIED);
     }
 

@@ -18,7 +18,10 @@
             "type": "Type",
             "amount": "Amount",
             "keywords": "Keywords",
-            "modified": "Modified",
+            "description": "Description",
+            "done": "Done",
+            "product": "Product",
+            "user": "User",
             "product": "Product"
         }
     }

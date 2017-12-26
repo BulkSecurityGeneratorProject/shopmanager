@@ -7,12 +7,18 @@
         Added the constraints for entity Transaction.
     -->
     <changeSet id="20171223162658-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="product_id"
                                  baseTableName="transaction"
                                  constraintName="fk_transaction_product_id"
                                  referencedColumnNames="id"
                                  referencedTableName="product"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="transaction"
+                                 constraintName="fk_transaction_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -5,7 +5,11 @@ export class ProductShpMng implements BaseEntity {
         public id?: number,
         public label?: string,
         public buyingPrice?: number,
+        public amount?: number,
+        public stays?: number,
         public modified?: any,
+        public products?: BaseEntity[],
+        public userId?: number,
     ) {
     }
 }

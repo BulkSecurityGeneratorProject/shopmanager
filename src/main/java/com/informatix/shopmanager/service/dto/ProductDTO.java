@@ -4,6 +4,8 @@ package com.informatix.shopmanager.service.dto;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -20,7 +22,17 @@ public class ProductDTO implements Serializable {
     @DecimalMin(value = "1")
     private Float buyingPrice;
 
+    @NotNull
+    @Min(value = 1)
+    private Integer amount;
+
+    @NotNull
+    @Min(value = 0)
+    private Integer stays;
+
     private LocalDate modified;
+
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -46,12 +58,36 @@ public class ProductDTO implements Serializable {
         this.buyingPrice = buyingPrice;
     }
 
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Integer getStays() {
+        return stays;
+    }
+
+    public void setStays(Integer stays) {
+        this.stays = stays;
+    }
+
     public LocalDate getModified() {
         return modified;
     }
 
     public void setModified(LocalDate modified) {
         this.modified = modified;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -81,6 +117,8 @@ public class ProductDTO implements Serializable {
             "id=" + getId() +
             ", label='" + getLabel() + "'" +
             ", buyingPrice=" + getBuyingPrice() +
+            ", amount=" + getAmount() +
+            ", stays=" + getStays() +
             ", modified='" + getModified() + "'" +
             "}";
     }

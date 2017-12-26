@@ -53,8 +53,11 @@ public class TransactionResourceIntTest {
     private static final String DEFAULT_KEYWORDS = "AAAAAAAAAA";
     private static final String UPDATED_KEYWORDS = "BBBBBBBBBB";
 
-    private static final LocalDate DEFAULT_MODIFIED = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_MODIFIED = LocalDate.now(ZoneId.systemDefault());
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final LocalDate DEFAULT_DONE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DONE = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -103,7 +106,8 @@ public class TransactionResourceIntTest {
             .type(DEFAULT_TYPE)
             .amount(DEFAULT_AMOUNT)
             .keywords(DEFAULT_KEYWORDS)
-            .modified(DEFAULT_MODIFIED);
+            .description(DEFAULT_DESCRIPTION)
+            .done(DEFAULT_DONE);
         return transaction;
     }
 
@@ -131,7 +135,8 @@ public class TransactionResourceIntTest {
         assertThat(testTransaction.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testTransaction.getAmount()).isEqualTo(DEFAULT_AMOUNT);
         assertThat(testTransaction.getKeywords()).isEqualTo(DEFAULT_KEYWORDS);
-        assertThat(testTransaction.getModified()).isEqualTo(DEFAULT_MODIFIED);
+        assertThat(testTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testTransaction.getDone()).isEqualTo(DEFAULT_DONE);
     }
 
     @Test
@@ -206,7 +211,8 @@ public class TransactionResourceIntTest {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
             .andExpect(jsonPath("$.[*].keywords").value(hasItem(DEFAULT_KEYWORDS.toString())))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(DEFAULT_MODIFIED.toString())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].done").value(hasItem(DEFAULT_DONE.toString())));
     }
 
     @Test
@@ -223,7 +229,8 @@ public class TransactionResourceIntTest {
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
             .andExpect(jsonPath("$.keywords").value(DEFAULT_KEYWORDS.toString()))
-            .andExpect(jsonPath("$.modified").value(DEFAULT_MODIFIED.toString()));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.done").value(DEFAULT_DONE.toString()));
     }
 
     @Test
@@ -249,7 +256,8 @@ public class TransactionResourceIntTest {
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
             .keywords(UPDATED_KEYWORDS)
-            .modified(UPDATED_MODIFIED);
+            .description(UPDATED_DESCRIPTION)
+            .done(UPDATED_DONE);
         TransactionDTO transactionDTO = transactionMapper.toDto(updatedTransaction);
 
         restTransactionMockMvc.perform(put("/api/transactions")
@@ -264,7 +272,8 @@ public class TransactionResourceIntTest {
         assertThat(testTransaction.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testTransaction.getAmount()).isEqualTo(UPDATED_AMOUNT);
         assertThat(testTransaction.getKeywords()).isEqualTo(UPDATED_KEYWORDS);
-        assertThat(testTransaction.getModified()).isEqualTo(UPDATED_MODIFIED);
+        assertThat(testTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTransaction.getDone()).isEqualTo(UPDATED_DONE);
     }
 
     @Test

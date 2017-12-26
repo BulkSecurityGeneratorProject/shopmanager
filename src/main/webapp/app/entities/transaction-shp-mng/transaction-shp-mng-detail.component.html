@@ -16,9 +16,23 @@
         <dd>
             <span>{{transaction.keywords}}</span>
         </dd>
-        <dt><span jhiTranslate="shopManagerApp.transaction.modified">Modified</span></dt>
+        <dt><span jhiTranslate="shopManagerApp.transaction.description">Description</span></dt>
         <dd>
-            <span>{{transaction.modified | date:'mediumDate'}}</span>
+            <span>{{transaction.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.done">Done</span></dt>
+        <dd>
+            <span>{{transaction.done | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.product">Product</span></dt>
+        <dd>
+            <div *ngIf="transaction.productId">
+                <a [routerLink]="['/product-shp-mng', transaction.productId]">{{transaction.productId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.user">User</span></dt>
+        <dd>
+            {{transaction.userId}}
         </dd>
         <dt><span jhiTranslate="shopManagerApp.transaction.product">Product</span></dt>
         <dd>

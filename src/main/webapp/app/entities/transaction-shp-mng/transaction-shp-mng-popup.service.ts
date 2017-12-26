@@ -26,11 +26,11 @@ export class TransactionShpMngPopupService {
 
             if (id) {
                 this.transactionService.find(id).subscribe((transaction) => {
-                    if (transaction.modified) {
-                        transaction.modified = {
-                            year: transaction.modified.getFullYear(),
-                            month: transaction.modified.getMonth() + 1,
-                            day: transaction.modified.getDate()
+                    if (transaction.done) {
+                        transaction.done = {
+                            year: transaction.done.getFullYear(),
+                            month: transaction.done.getMonth() + 1,
+                            day: transaction.done.getDate()
                         };
                     }
                     this.ngbModalRef = this.transactionModalRef(component, transaction);

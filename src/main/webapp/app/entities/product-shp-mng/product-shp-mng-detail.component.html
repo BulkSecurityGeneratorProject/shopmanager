@@ -12,9 +12,21 @@
         <dd>
             <span>{{product.buyingPrice}}</span>
         </dd>
+        <dt><span jhiTranslate="shopManagerApp.product.amount">Amount</span></dt>
+        <dd>
+            <span>{{product.amount}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.product.stays">Stays</span></dt>
+        <dd>
+            <span>{{product.stays}}</span>
+        </dd>
         <dt><span jhiTranslate="shopManagerApp.product.modified">Modified</span></dt>
         <dd>
             <span>{{product.modified | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.product.user">User</span></dt>
+        <dd>
+            {{product.userId}}
         </dd>
     </dl>
 
