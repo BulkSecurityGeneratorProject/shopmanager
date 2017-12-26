@@ -1,10 +1,11 @@
 package com.informatix.shopmanager.repository;
 
 import com.informatix.shopmanager.domain.Transaction;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.awt.print.Pageable;
 import java.util.List;
 
 /**

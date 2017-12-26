@@ -30,6 +30,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="selling_price" type="${floatType}">
+                <constraints nullable="false" />
+            </column>
+
             <column name="amount" type="integer">
                 <constraints nullable="false" />
             </column>

@@ -37,6 +37,11 @@ public class Product implements Serializable {
     private Float buyingPrice;
 
     @NotNull
+    @DecimalMin(value = "1")
+    @Column(name = "selling_price", nullable = false)
+    private Float sellingPrice;
+
+    @NotNull
     @Min(value = 1)
     @Column(name = "amount", nullable = false)
     private Integer amount;
@@ -90,6 +95,19 @@ public class Product implements Serializable {
 
     public void setBuyingPrice(Float buyingPrice) {
         this.buyingPrice = buyingPrice;
+    }
+
+    public Float getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public Product sellingPrice(Float sellingPrice) {
+        this.sellingPrice = sellingPrice;
+        return this;
+    }
+
+    public void setSellingPrice(Float sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public Integer getAmount() {
@@ -196,6 +214,7 @@ public class Product implements Serializable {
             "id=" + getId() +
             ", label='" + getLabel() + "'" +
             ", buyingPrice=" + getBuyingPrice() +
+            ", sellingPrice=" + getSellingPrice() +
             ", amount=" + getAmount() +
             ", stays=" + getStays() +
             ", modified='" + getModified() + "'" +

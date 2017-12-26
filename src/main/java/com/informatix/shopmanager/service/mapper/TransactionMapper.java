@@ -11,10 +11,12 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {ProductMapper.class, UserMapper.class})
 public interface TransactionMapper extends EntityMapper<TransactionDTO, Transaction> {
 
+    @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "product.id", target = "productId")
-    TransactionDTO toDto(Transaction transaction);
+    TransactionDTO toDto(Transaction transaction); 
 
+    @Mapping(source = "productId", target = "product")
     @Mapping(source = "userId", target = "user")
     @Mapping(source = "productId", target = "product")
     Transaction toEntity(TransactionDTO transactionDTO);

@@ -17,6 +17,7 @@
             },
             "type": "Type",
             "amount": "Amount",
+            "sellingPrice": "Selling Price",
             "keywords": "Keywords",
             "description": "Description",
             "done": "Done",

@@ -19,6 +19,7 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="type"><span jhiTranslate="shopManagerApp.transaction.type">Type</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="amount"><span jhiTranslate="shopManagerApp.transaction.amount">Amount</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="sellingPrice"><span jhiTranslate="shopManagerApp.transaction.sellingPrice">Selling Price</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="keywords"><span jhiTranslate="shopManagerApp.transaction.keywords">Keywords</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="description"><span jhiTranslate="shopManagerApp.transaction.description">Description</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="done"><span jhiTranslate="shopManagerApp.transaction.done">Done</span> <span class="fa fa-sort"></span></th>
@@ -33,6 +34,7 @@
                 <td><a [routerLink]="['../transaction-shp-mng', transaction.id ]">{{transaction.id}}</a></td>
                 <td jhiTranslate="{{'shopManagerApp.TransactionType.' + transaction.type}}">{{transaction.type}}</td>
                 <td>{{transaction.amount}}</td>
+                <td>{{transaction.sellingPrice}}</td>
                 <td>{{transaction.keywords}}</td>
                 <td>{{transaction.description}}</td>
                 <td>{{transaction.done | date:'mediumDate'}}</td>

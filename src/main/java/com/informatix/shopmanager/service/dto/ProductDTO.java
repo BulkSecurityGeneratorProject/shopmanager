@@ -23,6 +23,10 @@ public class ProductDTO implements Serializable {
     private Float buyingPrice;
 
     @NotNull
+    @DecimalMin(value = "1")
+    private Float sellingPrice;
+
+    @NotNull
     @Min(value = 1)
     private Integer amount;
 
@@ -56,6 +60,14 @@ public class ProductDTO implements Serializable {
 
     public void setBuyingPrice(Float buyingPrice) {
         this.buyingPrice = buyingPrice;
+    }
+
+    public Float getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public void setSellingPrice(Float sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public Integer getAmount() {
@@ -117,6 +129,7 @@ public class ProductDTO implements Serializable {
             "id=" + getId() +
             ", label='" + getLabel() + "'" +
             ", buyingPrice=" + getBuyingPrice() +
+            ", sellingPrice=" + getSellingPrice() +
             ", amount=" + getAmount() +
             ", stays=" + getStays() +
             ", modified='" + getModified() + "'" +

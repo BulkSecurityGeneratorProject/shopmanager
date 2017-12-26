@@ -23,6 +23,10 @@ public class TransactionDTO implements Serializable {
     @Min(value = 1)
     private Integer amount;
 
+    @NotNull
+    @DecimalMin(value = "0")
+    private Float sellingPrice;
+
     private String keywords;
 
     private String description;
@@ -55,6 +59,14 @@ public class TransactionDTO implements Serializable {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Float getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public void setSellingPrice(Float sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public String getKeywords() {
@@ -124,6 +136,7 @@ public class TransactionDTO implements Serializable {
             "id=" + getId() +
             ", type='" + getType() + "'" +
             ", amount=" + getAmount() +
+            ", sellingPrice=" + getSellingPrice() +
             ", keywords='" + getKeywords() + "'" +
             ", description='" + getDescription() + "'" +
             ", done='" + getDone() + "'" +

@@ -50,6 +50,9 @@ public class TransactionResourceIntTest {
     private static final Integer DEFAULT_AMOUNT = 1;
     private static final Integer UPDATED_AMOUNT = 2;
 
+    private static final Float DEFAULT_SELLING_PRICE = 0F;
+    private static final Float UPDATED_SELLING_PRICE = 1F;
+
     private static final String DEFAULT_KEYWORDS = "AAAAAAAAAA";
     private static final String UPDATED_KEYWORDS = "BBBBBBBBBB";
 
@@ -105,6 +108,7 @@ public class TransactionResourceIntTest {
         Transaction transaction = new Transaction()
             .type(DEFAULT_TYPE)
             .amount(DEFAULT_AMOUNT)
+            .sellingPrice(DEFAULT_SELLING_PRICE)
             .keywords(DEFAULT_KEYWORDS)
             .description(DEFAULT_DESCRIPTION)
             .done(DEFAULT_DONE);
@@ -134,6 +138,7 @@ public class TransactionResourceIntTest {
         Transaction testTransaction = transactionList.get(transactionList.size() - 1);
         assertThat(testTransaction.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testTransaction.getAmount()).isEqualTo(DEFAULT_AMOUNT);
+        assertThat(testTransaction.getSellingPrice()).isEqualTo(DEFAULT_SELLING_PRICE);
         assertThat(testTransaction.getKeywords()).isEqualTo(DEFAULT_KEYWORDS);
         assertThat(testTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testTransaction.getDone()).isEqualTo(DEFAULT_DONE);
@@ -199,6 +204,25 @@ public class TransactionResourceIntTest {
 
     @Test
     @Transactional
+    public void checkSellingPriceIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transactionRepository.findAll().size();
+        // set the field null
+        transaction.setSellingPrice(null);
+
+        // Create the Transaction, which fails.
+        TransactionDTO transactionDTO = transactionMapper.toDto(transaction);
+
+        restTransactionMockMvc.perform(post("/api/transactions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(transactionDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Transaction> transactionList = transactionRepository.findAll();
+        assertThat(transactionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTransactions() throws Exception {
         // Initialize the database
         transactionRepository.saveAndFlush(transaction);
@@ -210,6 +234,7 @@ public class TransactionResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
+            .andExpect(jsonPath("$.[*].sellingPrice").value(hasItem(DEFAULT_SELLING_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].keywords").value(hasItem(DEFAULT_KEYWORDS.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].done").value(hasItem(DEFAULT_DONE.toString())));
@@ -228,6 +253,7 @@ public class TransactionResourceIntTest {
             .andExpect(jsonPath("$.id").value(transaction.getId().intValue()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
+            .andExpect(jsonPath("$.sellingPrice").value(DEFAULT_SELLING_PRICE.doubleValue()))
             .andExpect(jsonPath("$.keywords").value(DEFAULT_KEYWORDS.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.done").value(DEFAULT_DONE.toString()));
@@ -255,6 +281,7 @@ public class TransactionResourceIntTest {
         updatedTransaction
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
+            .sellingPrice(UPDATED_SELLING_PRICE)
             .keywords(UPDATED_KEYWORDS)
             .description(UPDATED_DESCRIPTION)
             .done(UPDATED_DONE);
@@ -271,6 +298,7 @@ public class TransactionResourceIntTest {
         Transaction testTransaction = transactionList.get(transactionList.size() - 1);
         assertThat(testTransaction.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testTransaction.getAmount()).isEqualTo(UPDATED_AMOUNT);
+        assertThat(testTransaction.getSellingPrice()).isEqualTo(UPDATED_SELLING_PRICE);
         assertThat(testTransaction.getKeywords()).isEqualTo(UPDATED_KEYWORDS);
         assertThat(testTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testTransaction.getDone()).isEqualTo(UPDATED_DONE);

@@ -17,6 +17,7 @@
             },
             "label": "Label",
             "buyingPrice": "Buying Price",
+            "sellingPrice": "Selling Price",
             "amount": "Amount",
             "stays": "Stays",
             "modified": "Modified",

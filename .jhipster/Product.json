@@ -32,6 +32,15 @@
             "fieldValidateRulesMin": 1
         },
         {
+            "fieldName": "sellingPrice",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 1
+        },
+        {
             "fieldName": "amount",
             "fieldType": "Integer",
             "fieldValidateRules": [

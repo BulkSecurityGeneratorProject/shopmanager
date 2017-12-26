@@ -19,6 +19,7 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="label"><span jhiTranslate="shopManagerApp.product.label">Label</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="buyingPrice"><span jhiTranslate="shopManagerApp.product.buyingPrice">Buying Price</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="sellingPrice"><span jhiTranslate="shopManagerApp.product.sellingPrice">Selling Price</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="amount"><span jhiTranslate="shopManagerApp.product.amount">Amount</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="stays"><span jhiTranslate="shopManagerApp.product.stays">Stays</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="modified"><span jhiTranslate="shopManagerApp.product.modified">Modified</span> <span class="fa fa-sort"></span></th>
@@ -31,6 +32,7 @@
                 <td><a [routerLink]="['../product-shp-mng', product.id ]">{{product.id}}</a></td>
                 <td>{{product.label}}</td>
                 <td>{{product.buyingPrice}}</td>
+                <td>{{product.sellingPrice}}</td>
                 <td>{{product.amount}}</td>
                 <td>{{product.stays}}</td>
                 <td>{{product.modified | date:'mediumDate'}}</td>

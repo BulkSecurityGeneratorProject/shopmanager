@@ -36,6 +36,11 @@ public class Transaction implements Serializable {
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
+    @NotNull
+    @DecimalMin(value = "0")
+    @Column(name = "selling_price", nullable = false)
+    private Float sellingPrice;
+
     @Column(name = "keywords")
     private String keywords;
 
@@ -86,6 +91,19 @@ public class Transaction implements Serializable {
         this.amount = amount;
     }
 
+    public Float getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public Transaction sellingPrice(Float sellingPrice) {
+        this.sellingPrice = sellingPrice;
+        return this;
+    }
+
+    public void setSellingPrice(Float sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
+
     public String getKeywords() {
         return keywords;
     }
@@ -124,7 +142,6 @@ public class Transaction implements Serializable {
     public void setDone(LocalDate done) {
         this.done = done;
     }
-
 
     public User getUser() {
         return user;
@@ -179,6 +196,7 @@ public class Transaction implements Serializable {
             "id=" + getId() +
             ", type='" + getType() + "'" +
             ", amount=" + getAmount() +
+            ", sellingPrice=" + getSellingPrice() +
             ", keywords='" + getKeywords() + "'" +
             ", description='" + getDescription() + "'" +
             ", done='" + getDone() + "'" +
