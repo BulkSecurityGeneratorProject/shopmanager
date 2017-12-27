@@ -32,7 +32,7 @@ export const warehouseRoute: Routes = [
             'pagingParams': WarehouseShpMngResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.warehouse.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const warehouseRoute: Routes = [
         path: 'warehouse-shp-mng/:id',
         component: WarehouseShpMngDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.warehouse.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -52,7 +52,7 @@ export const warehousePopupRoute: Routes = [
         path: 'warehouse-shp-mng-new',
         component: WarehouseShpMngPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.warehouse.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const warehousePopupRoute: Routes = [
         path: 'warehouse-shp-mng/:id/edit',
         component: WarehouseShpMngPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.warehouse.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const warehousePopupRoute: Routes = [
         path: 'warehouse-shp-mng/:id/delete',
         component: WarehouseShpMngDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.warehouse.home.title'
         },
         canActivate: [UserRouteAccessService],

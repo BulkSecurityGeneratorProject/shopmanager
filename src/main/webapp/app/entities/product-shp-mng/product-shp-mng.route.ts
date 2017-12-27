@@ -32,7 +32,7 @@ export const productRoute: Routes = [
             'pagingParams': ProductShpMngResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.product.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const productRoute: Routes = [
         path: 'product-shp-mng/:id',
         component: ProductShpMngDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.product.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -52,7 +52,7 @@ export const productPopupRoute: Routes = [
         path: 'product-shp-mng-new',
         component: ProductShpMngPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.product.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const productPopupRoute: Routes = [
         path: 'product-shp-mng/:id/edit',
         component: ProductShpMngPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.product.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const productPopupRoute: Routes = [
         path: 'product-shp-mng/:id/delete',
         component: ProductShpMngDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.product.home.title'
         },
         canActivate: [UserRouteAccessService],

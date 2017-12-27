@@ -11,7 +11,7 @@ export const transactionRoute: Routes = [
         path: 'transaction-shp-mng',
         component: TransactionShpMngComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.transaction.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const transactionRoute: Routes = [
         path: 'transaction-shp-mng/:id',
         component: TransactionShpMngDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.transaction.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const transactionPopupRoute: Routes = [
         path: 'transaction-shp-mng-new',
         component: TransactionShpMngPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.transaction.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const transactionPopupRoute: Routes = [
         path: 'transaction-shp-mng/:id/edit',
         component: TransactionShpMngPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.transaction.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const transactionPopupRoute: Routes = [
         path: 'transaction-shp-mng/:id/delete',
         component: TransactionShpMngDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'shopManagerApp.transaction.home.title'
         },
         canActivate: [UserRouteAccessService],
