@@ -35,6 +35,8 @@ public class TransactionDTO implements Serializable {
 
     private Long productId;
 
+    private String productDesc;
+
     private Long userId;
 
     public Long getId() {
@@ -99,6 +101,14 @@ public class TransactionDTO implements Serializable {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public String getProductDesc() {
+        return productDesc;
+    }
+
+    public void setProductDesc(String productDesc) {
+        this.productDesc = productDesc;
     }
 
     public Long getUserId() {

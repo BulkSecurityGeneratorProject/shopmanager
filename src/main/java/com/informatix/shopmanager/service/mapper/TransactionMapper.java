@@ -13,10 +13,9 @@ public interface TransactionMapper extends EntityMapper<TransactionDTO, Transact
 
     @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "product.id", target = "productId")
-    TransactionDTO toDto(Transaction transaction); 
+    @Mapping(expression = "java( transaction.getProduct().getLabel() + \"/\" + transaction.getProduct().getBuyingPrice() )", target = "productDesc")
+    TransactionDTO toDto(Transaction transaction);
 
-    @Mapping(source = "productId", target = "product")
     @Mapping(source = "userId", target = "user")
     @Mapping(source = "productId", target = "product")
     Transaction toEntity(TransactionDTO transactionDTO);
