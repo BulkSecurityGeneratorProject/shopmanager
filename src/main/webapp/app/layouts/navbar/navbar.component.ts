@@ -73,6 +73,10 @@ export class NavbarComponent implements OnInit {
         this.isNavbarCollapsed = !this.isNavbarCollapsed;
     }
 
+    hasAuthority(authority: string) {
+        return this.principal.hasAuthority(authority);
+    }
+
     getImageUrl() {
         return this.isAuthenticated() ? this.principal.getImageUrl() : null;
     }
