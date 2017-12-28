@@ -1,0 +1,72 @@
+<div>
+    <h2>
+        <span jhiTranslate="shopManagerApp.transaction.home.title">Transactions</span>
+        <button class="btn btn-primary float-right jh-create-entity create-transaction-shp-mng" [routerLink]="['/', { outlets: { popup: ['transaction-shp-mng-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="shopManagerApp.transaction.home.createLabel">
+            Create new Transaction
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="transactions">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="type"><span jhiTranslate="shopManagerApp.transaction.type">Type</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="amount"><span jhiTranslate="shopManagerApp.transaction.amount">Amount</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="sellingPrice"><span jhiTranslate="shopManagerApp.transaction.sellingPrice">Selling Price</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="keywords"><span jhiTranslate="shopManagerApp.transaction.keywords">Keywords</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="description"><span jhiTranslate="shopManagerApp.transaction.description">Description</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="done"><span jhiTranslate="shopManagerApp.transaction.done">Done</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="productId"><span jhiTranslate="shopManagerApp.transaction.product">Product</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let transaction of transactions ;trackBy: trackId">
+                <td><a [routerLink]="['../transaction-shp-mng', transaction.id ]">{{transaction.id}}</a></td>
+                <td jhiTranslate="{{'shopManagerApp.TransactionType.' + transaction.type}}">{{transaction.type}}</td>
+                <td>{{transaction.amount}}</td>
+                <td>{{transaction.sellingPrice}}</td>
+                <td>{{transaction.keywords}}</td>
+                <td>{{transaction.description}}</td>
+                <td>{{transaction.done | date:'mediumDate'}}</td>
+                <td>
+                    <div *ngIf="transaction.productId">
+                        <a [routerLink]="['../product-shp-mng', transaction.productId  ]" >{{transaction.productDesc}}</a>
+                    </div>
+                </td>
+                <button type="submit"
+                                [routerLink]="['../transaction-shp-mng', transaction.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'transaction-shp-mng/'+ transaction.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'transaction-shp-mng/'+ transaction.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+
+<div *ngIf="transaction">
+    <h2><span jhiTranslate="shopManagerApp.transaction.detail.title">Transaction</span> {{transaction.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="shopManagerApp.transaction.type">Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'shopManagerApp.TransactionType.' + transaction.type}}">{{transaction.type}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.amount">Amount</span></dt>
+        <dd>
+            <span>{{transaction.amount}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.sellingPrice">Selling Price</span></dt>
+        <dd>
+            <span>{{transaction.sellingPrice}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.keywords">Keywords</span></dt>
+        <dd>
+            <span>{{transaction.keywords}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.description">Description</span></dt>
+        <dd>
+            <span>{{transaction.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.done">Done</span></dt>
+        <dd>
+            <span>{{transaction.done | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.product">Product</span></dt>
+        <dd>
+            <div *ngIf="transaction.productId">
+                <a [routerLink]="['/product-shp-mng', transaction.productId]">{{transaction.productId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.user">User</span></dt>
+        <dd>
+            {{transaction.userId}}
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.transaction.product">Product</span></dt>
+        <dd>
+            <div *ngIf="transaction.productId">
+                <a [routerLink]="['/product-shp-mng', transaction.productId]">{{transaction.productId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'transaction-shp-mng/'+ transaction.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,42 @@
+
+<div *ngIf="product">
+    <h2><span jhiTranslate="shopManagerApp.product.detail.title">Product</span> {{product.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="shopManagerApp.product.label">Label</span></dt>
+        <dd>
+            <span>{{product.label}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.product.buyingPrice">Buying Price</span></dt>
+        <dd>
+            <span>{{product.buyingPrice}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.product.sellingPrice">Selling Price</span></dt>
+        <dd>
+            <span>{{product.sellingPrice}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.product.amount">Amount</span></dt>
+        <dd>
+            <span>{{product.amount}}</span>
+        </dd>
+        <dt><span jhiTranslate="shopManagerApp.product.stays">Stays</span></dt>
+        <dd>
+            <span>{{product.stays}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'product-client-shp-mng/'+ product.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
