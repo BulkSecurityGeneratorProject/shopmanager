@@ -3,6 +3,7 @@ package com.informatix.shopmanager.service;
 import com.informatix.shopmanager.service.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Interface for managing Product.
@@ -24,6 +25,9 @@ public interface ProductService {
      * @return the list of entities
      */
     Page<ProductDTO> findAll(Pageable pageable);
+
+    @Transactional(readOnly = true)
+    Page<ProductDTO> findAllByUser(Pageable pageable);
 
     /**
      * Get the "id" product.

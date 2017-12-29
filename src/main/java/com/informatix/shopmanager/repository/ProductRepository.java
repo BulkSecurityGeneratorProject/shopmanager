@@ -1,11 +1,12 @@
 package com.informatix.shopmanager.repository;
 
 import com.informatix.shopmanager.domain.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 /**
@@ -19,6 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByUserIsCurrentUser();
 
     @Query("select product from Product product where product.user.login = ?#{principal.username}")
-    List<Product> findByUserIsCurrentUser(Pageable pageable);
+    Page<Product> findByUserIsCurrentUser(Pageable pageable);
 
 }

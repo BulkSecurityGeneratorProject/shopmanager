@@ -61,6 +61,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     /**
+     * Get all user's products.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> findAllByUser(Pageable pageable) {
+        log.debug("Request to get all Products");
+        return productRepository.findByUserIsCurrentUser(pageable)
+            .map(productMapper::toDto);
+    }
+
+    /**
      * Get one product by id.
      *
      * @param id the id of the entity
