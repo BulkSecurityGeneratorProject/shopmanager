@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 
 /**
@@ -82,5 +83,14 @@ public class ProductServiceImpl implements ProductService{
     public void delete(Long id) {
         log.debug("Request to delete Product : {}", id);
         productRepository.delete(id);
+    }
+
+    public synchronized boolean warehouseOperation(Product product, int count){
+        Assert.notNull(product);
+        if (count > 0){
+            product.setAmount(product.getAmount()+count);
+        }
+        product.setStays(product.getStays()+count);
+        return true;
     }
 }
