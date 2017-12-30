@@ -1,6 +1,7 @@
 package com.informatix.shopmanager.service;
 
 import com.informatix.shopmanager.domain.Product;
+import com.informatix.shopmanager.domain.Transaction;
 import com.informatix.shopmanager.service.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,7 +48,19 @@ public interface ProductService {
      */
     void delete(Long id);
 
-    boolean warehouseOperation(Product product, int count);
+    /**
+     * Apply transaction on product
+     *
+     * @param transaction current transaction to apply on product
+     * @param product the product concerned by transaction
+     */
+    boolean warehouseOperation(Product product, Transaction transaction);
 
+    /**
+     * Apply transaction on product
+     *
+     * @param from current transaction to apply on product
+     * @param productId the product concerned by transaction
+     */
     Float getProfit(LocalDate from, Long productId);
 }

@@ -1,5 +1,7 @@
 package com.informatix.shopmanager.service.impl;
 
+import com.informatix.shopmanager.domain.enumeration.TransactionType;
+import com.informatix.shopmanager.service.ProductService;
 import com.informatix.shopmanager.service.TransactionService;
 import com.informatix.shopmanager.domain.Transaction;
 import com.informatix.shopmanager.repository.TransactionRepository;
@@ -8,14 +10,10 @@ import com.informatix.shopmanager.service.mapper.TransactionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.util.Assert;
 
 
 /**
@@ -27,11 +25,14 @@ public class TransactionServiceImpl implements TransactionService{
 
     private final Logger log = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
+    private final ProductService productService;
+
     private final TransactionRepository transactionRepository;
 
     private final TransactionMapper transactionMapper;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
+    public TransactionServiceImpl(ProductService productService, TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
+        this.productService =  productService;
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
     }
@@ -46,8 +47,24 @@ public class TransactionServiceImpl implements TransactionService{
     public TransactionDTO save(TransactionDTO transactionDTO) {
         log.debug("Request to save Transaction : {}", transactionDTO);
         Transaction transaction = transactionMapper.toEntity(transactionDTO);
+        //Revert transaction if it is an update operation
+        if(transaction.getId() != null)
+            revertTransaction(transactionRepository.findOne(transaction.getId()));
         transaction = transactionRepository.save(transaction);
+        //Apply current transaction on product warehouse
+        productService.warehouseOperation(transaction.getProduct(), transaction);
         return transactionMapper.toDto(transaction);
+    }
+
+    private synchronized void revertTransaction(Transaction transaction) {
+        Assert.notNull(transaction, "[RevertTransaction] Transaction must be not null");
+        Assert.notNull(transaction, String.format("[RevertTransaction] Product's transaction must be not null\n %s",transaction));
+        if (TransactionType.INCOME == transaction.getType()){
+            transaction.setType(TransactionType.DEBIT);
+        }else {
+            transaction.setType(TransactionType.INCOME);
+        }
+        productService.warehouseOperation(transaction.getProduct(), transaction);
     }
 
     /**

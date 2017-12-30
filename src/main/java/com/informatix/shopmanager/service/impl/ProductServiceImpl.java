@@ -111,12 +111,17 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public synchronized boolean warehouseOperation(Product product, int count){
+    public synchronized boolean warehouseOperation(Product product, Transaction transaction){
         Assert.notNull(product);
-        if (count > 0){
-            product.setAmount(product.getAmount()+count);
+        Assert.notNull(transaction);
+        Assert.isTrue(product.equals(transaction.getProduct()), String.format("[WarehouseOperation] product %d and transaction %d mismatch ", product.getId(), transaction.getId()));
+        int diff = (TransactionType.INCOME.equals(transaction.getType()))
+            ?transaction.getAmount()
+            :transaction.getAmount()*-1;
+        if (diff > 0){
+            product.setAmount(product.getAmount()+diff);
         }
-        product.setStays(product.getStays()+count);
+        product.setStays(product.getStays()+diff);
         return true;
     }
 
@@ -129,7 +134,7 @@ public class ProductServiceImpl implements ProductService{
             return computeProfit(product.getTransactions());
         }
 
-        return computeProfit(transactionRepository.findAfterDone(from));
+        return computeProfit(transactionRepository.findAfterDone(from, product));
     }
 
     private Float computeProfit(Collection<Transaction> transactions){
