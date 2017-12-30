@@ -27,7 +27,7 @@ public class ProductDTO implements Serializable {
     private Float sellingPrice;
 
     @NotNull
-    @Min(value = 1)
+    @Min(value = 0)
     private Integer amount;
 
     @NotNull

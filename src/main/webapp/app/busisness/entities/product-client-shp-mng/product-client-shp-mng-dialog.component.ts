@@ -37,6 +37,10 @@ export class ProductClientShpMngDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.isUpdate = this.product.id !== undefined;
+        if (!this.isUpdate) {
+            this.product.amount = 0;
+            this.product.stays = 0;
+        }
         this.userService.query()
             .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
