@@ -3,9 +3,11 @@ package com.informatix.shopmanager.service.impl;
 import com.informatix.shopmanager.domain.Transaction;
 import com.informatix.shopmanager.domain.enumeration.TransactionType;
 import com.informatix.shopmanager.repository.TransactionRepository;
+import com.informatix.shopmanager.security.SecurityUtils;
 import com.informatix.shopmanager.service.ProductService;
 import com.informatix.shopmanager.domain.Product;
 import com.informatix.shopmanager.repository.ProductRepository;
+import com.informatix.shopmanager.service.UserService;
 import com.informatix.shopmanager.service.dto.ProductDTO;
 import com.informatix.shopmanager.service.mapper.ProductMapper;
 import org.slf4j.Logger;
@@ -18,7 +20,6 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -37,9 +38,12 @@ public class ProductServiceImpl implements ProductService{
 
     private final TransactionRepository transactionRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository, TransactionRepository transactionRepository, ProductMapper productMapper) {
+    private final UserService userService;
+
+    public ProductServiceImpl(ProductRepository productRepository, UserService userService, TransactionRepository transactionRepository, ProductMapper productMapper) {
         this.transactionRepository= transactionRepository;
         this.productRepository = productRepository;
+        this.userService = userService;
         this.productMapper = productMapper;
     }
 
@@ -53,6 +57,12 @@ public class ProductServiceImpl implements ProductService{
     public ProductDTO save(ProductDTO productDTO) {
         log.debug("Request to save Product : {}", productDTO);
         Product product = productMapper.toEntity(productDTO);
+        if (product.getModified() == null)
+            product.setModified(LocalDate.now());
+        if(product.getId() == null && product.getUser() == null){
+            //When we are on creation operation
+            product.setUser(userService.getUserByLogin(SecurityUtils.getCurrentUserLogin().orElse("")).get());
+        }
         product = productRepository.save(product);
         return productMapper.toDto(product);
     }
@@ -81,7 +91,7 @@ public class ProductServiceImpl implements ProductService{
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAllByUser(Pageable pageable) {
         log.debug("Request to get all Products");
-        return productRepository.findByUserIsCurrentUser(pageable)
+        return productRepository.queryFirstBy(pageable)
             .map(productMapper::toDto);
     }
 
@@ -113,7 +123,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public synchronized boolean warehouseOperation(Product product, Transaction transaction){
         Assert.notNull(product);
+        Assert.notNull(product.getAmount());
         Assert.notNull(transaction);
+        Assert.notNull(transaction.getAmount());
+        Assert.notNull(transaction.getType());
         Assert.isTrue(product.equals(transaction.getProduct()), String.format("[WarehouseOperation] product %d and transaction %d mismatch ", product.getId(), transaction.getId()));
         int diff = (TransactionType.INCOME.equals(transaction.getType()))
             ?transaction.getAmount()
@@ -148,5 +161,10 @@ public class ProductServiceImpl implements ProductService{
             }
         });
         return result.get();
+    }
+
+    @Override
+    public Product load(Long id){
+        return productRepository.findOne(id);
     }
 }

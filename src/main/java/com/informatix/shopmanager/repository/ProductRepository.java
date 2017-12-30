@@ -16,10 +16,10 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("select product from Product product where product.user.login = ?#{principal.username}")
+    @Query("select product from Product product where product.user.login = ?#{principal.username} order by product.modified desc")
     List<Product> findByUserIsCurrentUser();
 
-    @Query("select product from Product product where product.user.login = ?#{principal.username}")
-    Page<Product> findByUserIsCurrentUser(Pageable pageable);
+    @Query("select product from Product product where product.user.login = ?#{principal.username} order by product.modified desc")
+    Page<Product> queryFirstBy(Pageable pageable);
 
 }

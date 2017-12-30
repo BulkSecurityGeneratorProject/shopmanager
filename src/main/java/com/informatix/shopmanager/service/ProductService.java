@@ -63,4 +63,6 @@ public interface ProductService {
      * @param productId the product concerned by transaction
      */
     Float getProfit(LocalDate from, Long productId);
+
+    Product load(Long id);
 }

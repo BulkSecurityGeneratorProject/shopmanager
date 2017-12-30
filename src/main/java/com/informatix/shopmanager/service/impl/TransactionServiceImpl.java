@@ -52,7 +52,7 @@ public class TransactionServiceImpl implements TransactionService{
             revertTransaction(transactionRepository.findOne(transaction.getId()));
         transaction = transactionRepository.save(transaction);
         //Apply current transaction on product warehouse
-        productService.warehouseOperation(transaction.getProduct(), transaction);
+        productService.warehouseOperation(productService.load(transaction.getProduct().getId()), transaction);
         return transactionMapper.toDto(transaction);
     }
 
