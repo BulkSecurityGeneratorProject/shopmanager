@@ -50,6 +50,9 @@ public class Transaction implements Serializable {
     @Column(name = "done")
     private LocalDate done;
 
+    @Column(name = "modified")
+    private LocalDate modified;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
@@ -141,6 +144,14 @@ public class Transaction implements Serializable {
 
     public void setDone(LocalDate done) {
         this.done = done;
+    }
+
+    public LocalDate getModified() {
+        return modified;
+    }
+
+    public void setModified(LocalDate modified) {
+        this.modified = modified;
     }
 
     public User getUser() {
