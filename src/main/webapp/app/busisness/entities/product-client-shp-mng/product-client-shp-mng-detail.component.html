@@ -1,6 +1,7 @@
 
 <div *ngIf="product">
-    <h2><span jhiTranslate="shopManagerApp.product.detail.title">Product</span> {{product.id}}</h2>
+    <h2><span jhiTranslate="shopManagerApp.product.detail.title">
+        Product</span> {{product.id + '/' + product.label + '/' + product.buyingPrice}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
