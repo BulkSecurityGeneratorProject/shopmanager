@@ -256,4 +256,8 @@ public class UserService {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 
+    public Optional<User> getUserByLogin(String login){
+        return userRepository.findOneByLogin(login);
+    }
+
 }
