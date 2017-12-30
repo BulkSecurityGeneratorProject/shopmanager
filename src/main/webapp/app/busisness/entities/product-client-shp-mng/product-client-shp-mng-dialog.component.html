@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.product.label" for="field_label">Label</label>
             <input type="text" class="form-control" name="label" id="field_label"
-                [(ngModel)]="product.label" required disabled/>
+                [(ngModel)]="product.label" [disabled]="isUpdate" required/>
             <div [hidden]="!(editForm.controls.label?.dirty && editForm.controls.label?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.label?.errors?.required" jhiTranslate="entity.validation.required">
@@ -26,7 +26,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.product.buyingPrice" for="field_buyingPrice">Buying Price</label>
             <input type="number" class="form-control" name="buyingPrice" id="field_buyingPrice"
-                [(ngModel)]="product.buyingPrice" required min="1" disabled/>
+                [(ngModel)]="product.buyingPrice" [disabled]="isUpdate" required min="1"/>
             <div [hidden]="!(editForm.controls.buyingPrice?.dirty && editForm.controls.buyingPrice?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.buyingPrice?.errors?.required" jhiTranslate="entity.validation.required">
@@ -64,7 +64,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.product.amount" for="field_amount">Amount</label>
             <input type="number" class="form-control" name="amount" id="field_amount"
-                [(ngModel)]="product.amount" required min="1" disabled/>
+                [(ngModel)]="product.amount" [disabled]="true" required min="1"/>
             <div [hidden]="!(editForm.controls.amount?.dirty && editForm.controls.amount?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.amount?.errors?.required" jhiTranslate="entity.validation.required">
@@ -83,7 +83,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="shopManagerApp.product.stays" for="field_stays">Stays</label>
             <input type="number" class="form-control" name="stays" id="field_stays"
-                [(ngModel)]="product.stays" required min="0" disabled/>
+                [(ngModel)]="product.stays" [disabled]="true" required min="0"/>
             <div [hidden]="!(editForm.controls.stays?.dirty && editForm.controls.stays?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.stays?.errors?.required" jhiTranslate="entity.validation.required">

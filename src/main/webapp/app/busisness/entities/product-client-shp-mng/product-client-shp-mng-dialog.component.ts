@@ -20,6 +20,7 @@ export class ProductClientShpMngDialogComponent implements OnInit {
 
     product: ProductClientShpMng;
     isSaving: boolean;
+    isUpdate: boolean;
 
     users: User[];
     modifiedDp: any;
@@ -35,6 +36,7 @@ export class ProductClientShpMngDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.isUpdate = this.product.id !== undefined;
         this.userService.query()
             .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
