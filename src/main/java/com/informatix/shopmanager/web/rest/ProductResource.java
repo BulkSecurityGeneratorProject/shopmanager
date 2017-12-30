@@ -127,10 +127,14 @@ public class ProductResource {
      */
     @PostMapping("/productsByUser/profit")
     @Timed
-    public ResponseEntity<Float> getProfitByProduct(@Valid @RequestBody ProductProfitDTO productProfitDTO) throws URISyntaxException{
+    public ResponseEntity<ProductProfitDTO> getProfitByProduct(@Valid @RequestBody ProductProfitDTO productProfitDTO) {
         log.debug("REST request to get profits of product {}", productProfitDTO.getProductId());
         Float result = productService.getProfit(productProfitDTO.getFrom(), productProfitDTO.getProductId());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        ProductProfitDTO profitDTO = new ProductProfitDTO();
+        profitDTO.setFrom(productProfitDTO.getFrom());
+        profitDTO.setProductId(productProfitDTO.getProductId());
+        profitDTO.setResult(result);
+        return new ResponseEntity<ProductProfitDTO>(profitDTO, HttpStatus.OK);
     }
 
     /**
