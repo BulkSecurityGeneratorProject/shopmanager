@@ -49,7 +49,7 @@ public class CacheConfiguration {
             cm.createCache(com.informatix.shopmanager.domain.TransactionTag.class.getName(), jcacheConfiguration);
             cm.createCache(com.informatix.shopmanager.domain.Product.class.getName(), jcacheConfiguration);
             cm.createCache(com.informatix.shopmanager.domain.Warehouse.class.getName(), jcacheConfiguration);
-            cm.createCache(com.informatix.shopmanager.domain.Product.class.getName() + ".products", jcacheConfiguration);
+            cm.createCache(com.informatix.shopmanager.domain.Product.class.getName() + ".transactions", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
