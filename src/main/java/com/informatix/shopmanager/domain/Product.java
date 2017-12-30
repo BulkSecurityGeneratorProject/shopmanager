@@ -57,7 +57,7 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Transaction> products = new HashSet<>();
+    private Set<Transaction> transactions = new HashSet<>();
 
     @ManyToOne
     private User user;
@@ -149,29 +149,29 @@ public class Product implements Serializable {
         this.modified = modified;
     }
 
-    public Set<Transaction> getProducts() {
-        return products;
+    public Set<Transaction> getTransactions() {
+        return transactions;
     }
 
     public Product products(Set<Transaction> transactions) {
-        this.products = transactions;
+        this.transactions = transactions;
         return this;
     }
 
-    public Product addProduct(Transaction transaction) {
-        this.products.add(transaction);
+    public Product addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
         transaction.setProduct(this);
         return this;
     }
 
-    public Product removeProduct(Transaction transaction) {
-        this.products.remove(transaction);
+    public Product removeTransaction(Transaction transaction) {
+        this.transactions.remove(transaction);
         transaction.setProduct(null);
         return this;
     }
 
-    public void setProducts(Set<Transaction> transactions) {
-        this.products = transactions;
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public User getUser() {
