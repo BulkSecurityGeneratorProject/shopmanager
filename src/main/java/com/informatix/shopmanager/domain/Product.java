@@ -42,7 +42,7 @@ public class Product implements Serializable {
     private Float sellingPrice;
 
     @NotNull
-    @Min(value = 1)
+    @Min(value = 0)
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
@@ -54,7 +54,7 @@ public class Product implements Serializable {
     @Column(name = "modified")
     private LocalDate modified;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Transaction> transactions = new HashSet<>();

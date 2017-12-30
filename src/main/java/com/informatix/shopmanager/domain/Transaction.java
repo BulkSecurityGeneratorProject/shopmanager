@@ -50,7 +50,7 @@ public class Transaction implements Serializable {
     @Column(name = "done")
     private LocalDate done;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
     @ManyToOne
