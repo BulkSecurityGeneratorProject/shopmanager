@@ -98,6 +98,21 @@ public class ProductResource {
     }
 
     /**
+     * GET  /productsByUser : get all the user's products.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("/productsByUser")
+    @Timed
+    public ResponseEntity<List<ProductDTO>> getAllProductsByUser(Pageable pageable) {
+        log.debug("REST request to get a page of Products");
+        Page<ProductDTO> page = productService.findAllByUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/products");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
      * GET  /products/:id : get the "id" product.
      *
      * @param id the id of the productDTO to retrieve

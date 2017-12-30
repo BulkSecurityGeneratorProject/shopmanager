@@ -98,6 +98,21 @@ public class TransactionResource {
     }
 
     /**
+     * GET  /transactionsByUser : get all the transactions.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of transactions in body
+     */
+    @GetMapping("/transactionsByUser")
+    @Timed
+    public ResponseEntity<List<TransactionDTO>> getAllTransactionsByUser(Pageable pageable) {
+        log.debug("REST request to get a page of Transactions");
+        Page<TransactionDTO> page = transactionService.findAllByUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/transactions");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
      * GET  /transactions/:id : get the "id" transaction.
      *
      * @param id the id of the transactionDTO to retrieve

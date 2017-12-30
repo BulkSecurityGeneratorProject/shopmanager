@@ -12,6 +12,7 @@ import { ResponseWrapper, createRequestOption } from '../../../shared';
 export class TransactionClientShpMngService {
 
     private resourceUrl = SERVER_API_URL + 'api/transactions';
+    private resourceUrlTransactionsUser = SERVER_API_URL + 'api/transactionsByUser';
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
@@ -40,7 +41,7 @@ export class TransactionClientShpMngService {
 
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
+        return this.http.get(this.resourceUrlTransactionsUser, options)
             .map((res: Response) => this.convertResponse(res));
     }
 
