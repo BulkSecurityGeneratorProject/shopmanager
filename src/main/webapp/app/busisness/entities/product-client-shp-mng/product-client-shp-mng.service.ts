@@ -7,12 +7,14 @@ import { JhiDateUtils } from 'ng-jhipster';
 
 import { ProductClientShpMng } from './product-client-shp-mng.model';
 import { ResponseWrapper, createRequestOption } from '../../../shared';
+import {ProductProfitClientShpMng} from './product-profit-client-shp-mng.model';
 
 @Injectable()
 export class ProductClientShpMngService {
 
     private resourceUrl = SERVER_API_URL + 'api/products';
     private resourceUrlProductsUser = SERVER_API_URL + 'api/productsByUser';
+    private resourceUrlGetProfit = this.resourceUrlProductsUser + '/profit';
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
@@ -69,6 +71,16 @@ export class ProductClientShpMngService {
     }
 
     /**
+     * Convert a returned JSON object to ProductClientShpMng.
+     */
+    private convertProductProfitFromServer(json: any): ProductProfitClientShpMng {
+        const entity: ProductProfitClientShpMng = Object.assign(new ProductProfitClientShpMng(), json);
+        entity.from = this.dateUtils
+            .convertLocalDateFromServer(json.from);
+        return entity;
+    }
+
+    /**
      * Convert a ProductClientShpMng to a JSON which can be sent to the server.
      */
     private convert(product: ProductClientShpMng): ProductClientShpMng {
@@ -76,5 +88,23 @@ export class ProductClientShpMngService {
         copy.modified = this.dateUtils
             .convertLocalDateToServer(product.modified);
         return copy;
+    }
+
+    /**
+     * Convert a ProductProfitClientShpMng to a JSON which can be sent to the server.
+     */
+    private convertProductProfit(productProfit: ProductProfitClientShpMng): ProductProfitClientShpMng {
+        const copy: ProductProfitClientShpMng = Object.assign({}, productProfit);
+        copy.from = this.dateUtils
+            .convertLocalDateToServer(productProfit.from);
+        return copy;
+    }
+
+    getProductProfit(productId: number, from: any) {
+        const copy = this.convertProductProfit(new ProductProfitClientShpMng(-1, from, productId));
+        return this.http.post(this.resourceUrlGetProfit, copy).map((res: Response) => {
+            const jsonResponse = res.json();
+            return this.convertProductProfitFromServer(jsonResponse);
+        });
     }
 }

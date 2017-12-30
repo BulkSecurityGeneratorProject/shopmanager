@@ -24,7 +24,27 @@
         <dd>
             <span>{{product.stays}}</span>
         </dd>
+        <dt><span jhiTranslate="shopManagerApp.productProfit.result">Profit</span></dt>
+        <dd>
+            <span>{{productProfit.result}}</span>
+        </dd>
     </dl>
+
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="shopManagerApp.productProfit.from" for="field_from">From</label>
+        <div class="input-group">
+            <input id="field_from" type="text" class="form-control" name="modified" ngbDatepicker  #fromDp="ngbDatepicker" [(ngModel)]="productProfit.from"
+            />
+            <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="fromDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+        </div>
+    </div>
+    <button type="submit"
+            (click)="computeProfit()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Compute</span>
+    </button>
 
     <button type="submit"
             (click)="previousState()"

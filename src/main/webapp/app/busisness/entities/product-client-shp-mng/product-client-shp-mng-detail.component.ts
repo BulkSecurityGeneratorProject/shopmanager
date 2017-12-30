@@ -5,6 +5,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { ProductClientShpMng } from './product-client-shp-mng.model';
 import { ProductClientShpMngService } from './product-client-shp-mng.service';
+import {ProductProfitClientShpMng} from './product-profit-client-shp-mng.model';
 
 @Component({
     selector: 'jhi-product-client-shp-mng-detail',
@@ -13,6 +14,7 @@ import { ProductClientShpMngService } from './product-client-shp-mng.service';
 export class ProductClientShpMngDetailComponent implements OnInit, OnDestroy {
 
     product: ProductClientShpMng;
+    productProfit: ProductProfitClientShpMng;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
 
@@ -28,6 +30,12 @@ export class ProductClientShpMngDetailComponent implements OnInit, OnDestroy {
             this.load(params['id']);
         });
         this.registerChangeInProducts();
+    }
+
+    computeProfit() {
+        this.productService.getProductProfit(this.productProfit.productId, this.productProfit.from).subscribe( (productProfit) => {
+            this.productProfit = productProfit;
+        });
     }
 
     load(id) {
