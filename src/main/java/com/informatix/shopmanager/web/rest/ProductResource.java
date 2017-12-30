@@ -2,6 +2,7 @@ package com.informatix.shopmanager.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.informatix.shopmanager.service.ProductService;
+import com.informatix.shopmanager.service.dto.ProductProfitDTO;
 import com.informatix.shopmanager.web.rest.errors.BadRequestAlertException;
 import com.informatix.shopmanager.web.rest.util.HeaderUtil;
 import com.informatix.shopmanager.web.rest.util.PaginationUtil;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,6 +112,25 @@ public class ProductResource {
         Page<ProductDTO> page = productService.findAllByUser(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/products");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /productsByUser/profit : get profit by product.
+     *
+     * @param productProfitDTO contains
+     *                         {
+     *                              from : min date for profit calculation
+     *                              productId : "id" of product
+     *                         }
+     *
+     * @return the ResponseEntity with status 200 (OK) and the result of computation in body
+     */
+    @PostMapping("/productsByUser/profit")
+    @Timed
+    public ResponseEntity<Float> getProfitByProduct(@Valid @RequestBody ProductProfitDTO productProfitDTO) throws URISyntaxException{
+        log.debug("REST request to get profits of product {}", productProfitDTO.getProductId());
+        Float result = productService.getProfit(productProfitDTO.getFrom(), productProfitDTO.getProductId());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**

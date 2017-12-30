@@ -108,7 +108,7 @@ public class TransactionResource {
     public ResponseEntity<List<TransactionDTO>> getAllTransactionsByUser(Pageable pageable) {
         log.debug("REST request to get a page of Transactions");
         Page<TransactionDTO> page = transactionService.findAllByUser(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/transactions");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/transactionsByUser");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
