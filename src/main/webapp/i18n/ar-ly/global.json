@@ -6,6 +6,11 @@
             "home": "الصفحة الرئيسية",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
+                "client": {
+                    "main": "Operations",
+                    "transactionClientShpMng": "Transactions",
+                    "productClientShpMng": "Products"
+                },
                 "main": "الكيانات",
                 "transactionShpMng": "Transaction",
                 "transactionTagShpMng": "Transaction Tag",
