@@ -1,5 +1,8 @@
 package com.informatix.shopmanager.service.impl;
 
+import com.informatix.shopmanager.domain.Transaction;
+import com.informatix.shopmanager.domain.enumeration.TransactionType;
+import com.informatix.shopmanager.repository.TransactionRepository;
 import com.informatix.shopmanager.service.ProductService;
 import com.informatix.shopmanager.domain.Product;
 import com.informatix.shopmanager.repository.ProductRepository;
@@ -12,6 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -27,7 +35,10 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+    private final TransactionRepository transactionRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository, TransactionRepository transactionRepository, ProductMapper productMapper) {
+        this.transactionRepository= transactionRepository;
         this.productRepository = productRepository;
         this.productMapper = productMapper;
     }
@@ -99,6 +110,7 @@ public class ProductServiceImpl implements ProductService{
         productRepository.delete(id);
     }
 
+    @Override
     public synchronized boolean warehouseOperation(Product product, int count){
         Assert.notNull(product);
         if (count > 0){
@@ -106,5 +118,30 @@ public class ProductServiceImpl implements ProductService{
         }
         product.setStays(product.getStays()+count);
         return true;
+    }
+
+    @Override
+    public Float getProfit(LocalDate from, Long productId){
+        Product product = productRepository.findOne(productId);
+        Assert.notNull(product);
+        if (from == null) {
+            //Compute from the beginning
+            return computeProfit(product.getTransactions());
+        }
+
+        return computeProfit(transactionRepository.findAfterDone(from));
+    }
+
+    private Float computeProfit(Collection<Transaction> transactions){
+        AtomicReference<Float> result = new AtomicReference<>(0f);
+        transactions.forEach((transaction) -> {
+            if (TransactionType.INCOME == transaction.getType()) {
+                result.updateAndGet(v -> v - transaction.getAmount() * transaction.getSellingPrice());
+            }else {
+                //TransactionType.DEBIT == transaction.getType()
+                result.updateAndGet(v -> v + transaction.getAmount() * transaction.getSellingPrice());
+            }
+        });
+        return result.get();
     }
 }

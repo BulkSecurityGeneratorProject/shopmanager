@@ -1,9 +1,12 @@
 package com.informatix.shopmanager.service;
 
+import com.informatix.shopmanager.domain.Product;
 import com.informatix.shopmanager.service.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 /**
  * Service Interface for managing Product.
@@ -43,4 +46,8 @@ public interface ProductService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    boolean warehouseOperation(Product product, int count);
+
+    Float getProfit(LocalDate from, Long productId);
 }
