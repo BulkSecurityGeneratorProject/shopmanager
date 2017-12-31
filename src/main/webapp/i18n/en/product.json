@@ -15,6 +15,10 @@
             "detail": {
                 "title": "Product"
             },
+            "productProfit": {
+                "from": "Since",
+                "result": "Profit"
+            },
             "label": "Label",
             "buyingPrice": "Buying Price",
             "sellingPrice": "Selling Price",

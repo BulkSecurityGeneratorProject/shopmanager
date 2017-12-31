@@ -105,7 +105,8 @@
             "edit": "تعديل",
             "open": "فتح",
             "save": "حفظ",
-            "view": "عرض"
+            "view": "عرض",
+            "compute": "عد"
         },
         "detail": {
             "field": "حقل",
