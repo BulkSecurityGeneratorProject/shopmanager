@@ -1,6 +1,8 @@
 
 <div *ngIf="transaction">
-    <h2><span jhiTranslate="shopManagerApp.transaction.detail.title">Transaction</span> {{transaction.id}}</h2>
+    <h2><span jhiTranslate="shopManagerApp.transaction.detail.title">Transaction</span>
+        {{transaction.id+'/'+(transaction.done | date:'mediumDate')+'/'+transaction.productDesc}}
+    </h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
