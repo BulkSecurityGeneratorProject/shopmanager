@@ -9,7 +9,7 @@ export class ProductClientShpMng implements BaseEntity {
         public amount?: number,
         public stays?: number,
         public modified?: any,
-        public products?: BaseEntity[],
+        public transactions?: BaseEntity[],
         public userId?: number,
     ) {
     }

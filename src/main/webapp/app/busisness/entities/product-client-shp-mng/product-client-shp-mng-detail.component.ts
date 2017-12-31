@@ -41,6 +41,7 @@ export class ProductClientShpMngDetailComponent implements OnInit, OnDestroy {
     load(id) {
         this.productService.find(id).subscribe((product) => {
             this.product = product;
+            this.productProfit = new ProductProfitClientShpMng(-1, new Date(0), this.product.id);
         });
     }
     previousState() {

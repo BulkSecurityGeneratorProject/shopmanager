@@ -29,22 +29,19 @@
         <dd>
             <span>{{productProfit.result}}</span>
         </dd>
-    </dl>
-
-    <div class="form-group">
-        <label class="form-control-label" jhiTranslate="shopManagerApp.productProfit.from" for="field_from">From</label>
-        <div class="input-group">
+        <dt><span class="form-control-label" jhiTranslate="shopManagerApp.product.productProfit.from">From</span></dt>
+        <dd>
             <input id="field_from" type="text" class="form-control" name="modified" ngbDatepicker  #fromDp="ngbDatepicker" [(ngModel)]="productProfit.from"
             />
             <span class="input-group-btn">
-                    <button type="button" class="btn btn-secondary" (click)="fromDp.toggle()"><i class="fa fa-calendar"></i></button>
+                    <button type="button" class="btn btn-info" (click)="fromDp.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>
-        </div>
-    </div>
+        </dd>
+    </dl>
     <button type="submit"
             (click)="computeProfit()"
             class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Compute</span>
+        <span class="fa fa-angellist"></span>&nbsp;<span jhiTranslate="entity.action.back"> Compute</span>
     </button>
 
     <button type="submit"
